@@ -1,0 +1,48 @@
+
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build_and_test:
+    docker:
+      - image: circleci/python:3.9.0 # executor for the build job
+      
+    working_directory: /tmp/project
+
+    steps:
+      - checkout # checkout source code to working directory
+
+      # Download and cache dependencies using checksum on requirements.txt
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      # - run:
+      #     name: install dependencies
+      #     command: |
+      #       python3 -m venv venv
+      #       . venv/bin/activate
+      #       pip install -r requirements.txt
+      - run:
+          name: install dependencies
+          command: |
+            make setup
+            make install
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: lint code
+          command: |
+            . venv/bin/activate
+            make lint
+      - run:
+          name: test code
+          command: |
+            . venv/bin/activate
+            make test
