@@ -26,6 +26,8 @@
       1.  base64 encode the json you downloaded so it can be pasted into circleci: in terminal on your machine, run `cat path/to/your/credentials.json | base64 | pbcopy`
       2.  pbcopy puts it in your clipboard so you can go to circleci and past it in as the value 
       3.  jk ended up just pasting in the json as-is and putting it in a json file as a step in the job and it worked! 
+4. enable app engine APIs on the google cloud project to deploy with gcloud app deploy, and enable compute APIs to set default zone with set compute/zone command
+  
 
 https://localghost.dev/2019/12/deploying-your-google-appengine-app-with-circleci/
 
