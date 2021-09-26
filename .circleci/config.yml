@@ -5,7 +5,7 @@
 #
 version: 2
 jobs:
-  "build_and_test":
+  build:
     docker:
       - image: circleci/python:3.9.0 # executor for the build job
       
