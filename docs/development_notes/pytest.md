@@ -1,6 +1,6 @@
 ## Pytest
 ### Troubleshooting
-- functions should start with test to be found 
+- functions should start with test_ to be autodiscoverable
 - need empty __init__.py in your package directories for it to find the directories properly (same for pylint)
 - if pytest can't find modules for your code or installed libraries, you are probably using the globally installed pytest and not the one in your venv. verify this with: `which pytest`. 
 - if it's the global one, you need to use these steps: 

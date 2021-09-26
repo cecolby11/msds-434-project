@@ -1,3 +1,4 @@
 pytest
 pylint
 pytest-cov
+flask==2.0.1
