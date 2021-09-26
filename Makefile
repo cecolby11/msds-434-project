@@ -6,12 +6,12 @@ install:
 	pip install -r requirements.txt
 
 test: 
-	source venv/bin/activate &&\
+	. venv/bin/activate &&\
 	python -m pytest -vv --cov=. tests/*.py
 
 lint:
     # only show warnings and errors for continuous delivery project
-	source venv/bin/activate &&\
+	. venv/bin/activate &&\
 	pylint --disable=R,C web_service
 
 clean:
