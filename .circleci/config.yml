@@ -76,12 +76,9 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Dump Google Cloud Credentials to file
-          command: echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcp-key.json
-      - run:
           name: Set up gcloud config
           command: |
-            gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+            echo ${GCLOUD_SERVICE_KEY} | base64 --decode | gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
             gcloud --quiet config set project ${GCLOUD_PROJECT}
             gcloud --quiet config set compute/zone ${GCLOUD_ZONE}         
       - run: 
