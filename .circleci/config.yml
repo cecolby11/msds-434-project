@@ -34,19 +34,50 @@ jobs:
           root: ~/
           paths:
             - "project"
+    #   - run:
+    #       name: lint code
+    #       command: |
+    #         . venv/bin/activate
+    #         make lint
+    #   - run:
+    #       name: test code
+    #       command: |
+    #         . venv/bin/activate
+    #         make test
+  
+  deploy: 
+    docker:
+      - image: google/cloud-sdk
+
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/
       - run:
-          name: lint code
+          name: Set up gcloud config
           command: |
-            . venv/bin/activate
-            make lint
-      - run:
-          name: test code
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}         
+      - run: 
+          name: Install GAE Python Component
+          command: apt-get install google-cloud-sdk-app-engine-python
+      - deploy:
+          name: Deploying to App Engine
           command: |
-            . venv/bin/activate
-            make test
+            cd web_service
+            gcloud app deploy app.yaml
 
 workflows:
   version: 2
   build_deploy:
     jobs:
       - build
+      - deploy:
+          filters:
+            branches:
+              only: GP-28_gae-hello-world
+          requires:
+            - build
