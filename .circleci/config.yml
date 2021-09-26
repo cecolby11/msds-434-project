@@ -34,38 +34,16 @@ jobs:
           root: ~/
           paths:
             - "project"
-  lint:
-    docker:
-      - image: circleci/python:3.9.0 # executor for the build job
-
-    working_directory: ~/project
-
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: lint code
-          command: |
-            . venv/bin/activate
-            make lint
-      # use persist to workspace to persist between jobs in one workflow
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - "project"
-  test:
-    docker:
-      - image: circleci/python:3.9.0 # executor for the build job
-
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: test code
-          command: |
-            . venv/bin/activate
-            make test
+    #   - run:
+    #       name: lint code
+    #       command: |
+    #         . venv/bin/activate
+    #         make lint
+    #   - run:
+    #       name: test code
+    #       command: |
+    #         . venv/bin/activate
+    #         make test
   
   deploy: 
     docker:
@@ -85,24 +63,18 @@ jobs:
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}         
       - run: 
           name: Install GAE Python Component
-          command: apt-get install google-cloud-sdk-app-engine-python 
+          command: apt-get install google-cloud-sdk-app-engine-python
       - deploy:
           name: Deploying to App Engine
           command: |
             cd web_service
-            gcloud app deploy app.yaml
+            gcloud app deploy app.yaml --region ${GOOGLE_COMPUTE_REGION} --zone ${GOOGLE_COMPUTE_ZONE}
 
 workflows:
   version: 2
   build_lint_test_deploy:
     jobs:
       - build
-    #   - lint:
-    #       requires:
-    #         - build
-    #   - test:
-    #       requires:
-    #         - lint
       - deploy:
           filters:
             branches:
