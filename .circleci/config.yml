@@ -9,7 +9,7 @@ jobs:
     docker:
       - image: circleci/python:3.9.0 # executor for the build job
       
-    working_directory: /tmp/project
+    working_directory: ~/project
 
     steps:
       - checkout # checkout source code to working directory
@@ -36,11 +36,16 @@ jobs:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
+      # use persist to workspace to persist between jobs in one workflow
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - "project"
   lint:
     docker:
       - image: circleci/python:3.9.0 # executor for the build job
       
-    working_directory: /tmp/project
+    working_directory: ~/project
 
     steps:
       - run:
@@ -48,11 +53,16 @@ jobs:
           command: |
             . venv/bin/activate
             make lint
+      # use persist to workspace to persist between jobs in one workflow
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - "project"
   test:
     docker:
       - image: circleci/python:3.9.0 # executor for the build job
       
-    working_directory: /tmp/project
+    working_directory: ~/project
     steps:
       - run:
           name: test code
