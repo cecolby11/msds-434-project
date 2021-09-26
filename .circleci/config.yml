@@ -79,9 +79,6 @@ jobs:
           name: Dump Google Cloud Credentials to file
           command: echo ${GCLOUD_SERVICE_ACCT} > ${HOME}/gcp-key.json
       - run:
-          name: Copy across app.yaml config
-          command: ./app.yaml.sh > ./app.yaml
-      - run:
           name: Set up gcloud config
           command: |
             echo $GCLOUD_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
@@ -101,15 +98,15 @@ workflows:
   build_lint_test_deploy:
     jobs:
       - build
-      - lint:
-          requires:
-            - build
-      - test:
-          requires:
-            - lint
+    #   - lint:
+    #       requires:
+    #         - build
+    #   - test:
+    #       requires:
+    #         - lint
       - deploy:
           filters:
             branches:
               only: GP-28_gae-hello-world
           requires:
-            - test
+            - build

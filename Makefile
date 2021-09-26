@@ -7,7 +7,7 @@ install:
 
 test: 
 	. venv/bin/activate &&\
-	python -m pytest -vv --cov=. tests/*.py
+	pytest -vv --cov=. tests/*.py
 
 lint:
     # only show warnings and errors for continuous delivery project
