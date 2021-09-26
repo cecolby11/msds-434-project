@@ -68,7 +68,7 @@ jobs:
           name: Deploying to App Engine
           command: |
             cd web_service
-            gcloud app deploy app.yaml --region ${GOOGLE_COMPUTE_REGION} --zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud app deploy app.yaml --region=${GOOGLE_COMPUTE_REGION} --zone=${GOOGLE_COMPUTE_ZONE}
 
 workflows:
   version: 2
