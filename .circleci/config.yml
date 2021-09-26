@@ -77,7 +77,7 @@ jobs:
           at: ~/
       - run:
           name: Dump Google Cloud Credentials to file
-          command: echo ${GCLOUD_SERVICE_ACCT} > ${HOME}/gcp-key.json
+          command: echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcp-key.json
       - run:
           name: Set up gcloud config
           command: |
