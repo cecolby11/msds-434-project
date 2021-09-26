@@ -18,6 +18,3 @@ clean:
 	rm -rf venv
 
 all: setup install lint test clean
-
-save_requirements:
-	pip freeze > requirements.txt
