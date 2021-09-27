@@ -22,7 +22,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
+    
+    - name: Lint
+      run: make lint
+    
+    - name: Test
+      run: make test
+    
     - name: Deploy to App Engine
       id: deploy
       uses: google-github-actions/deploy-appengine@v0.2.0
