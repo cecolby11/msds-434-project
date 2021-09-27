@@ -3,12 +3,8 @@
 
 ## Directory Structure
 ```
-web_service/        # Source Code for Python Web Application
-│   __init__.py     # Python file for namespacing package so it can be imported
-│   main.py         # Json service entry point - app engine expects this to be named main
-│   hello.py        # simple python function for demoing circleci project 
-│   app.yaml        # Configuration for web service deployment to App Engine
-└───tbd             # GCP service implementations for BigQuery etc.? 
+main.py         # Json service entry point - app engine expects this to be named main
+app.yaml        # Configuration for web service deployment to App Engine
 .circleci/          # CircleCI configuration files for CICD
 └───config.yaml     # CircleCI workflow configuration 
 tests/              # Python application test suite 
@@ -30,5 +26,5 @@ make all
 
 ## Run Flask API locally 
 ```bash
-python web_service/main.py
+python main.py
 ```

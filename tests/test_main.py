@@ -1,4 +1,4 @@
-from web_service import main
+import main
 
 def test_home_page():
     response = main.home()

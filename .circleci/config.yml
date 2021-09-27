@@ -67,7 +67,7 @@ jobs:
       - deploy:
           name: Deploying to App Engine
           command: |
-            cd web_service
+            cp -r venv/bin
             gcloud app deploy app.yaml
 
 workflows:
