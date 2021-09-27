@@ -12,7 +12,7 @@
 
 ## Setting up GCP App Engine Deploy with CircleCI
 1. create a service account in GCP console 
-   1. add app engine admin permissions and storage admin permissions when prompted? Nope not enough, gave it project editor for now. has to be able to list buckets and apparently storage admin isn't enough for that. 
+   1. add app engine admin permissions 
 2. create key and download as json 
    1. click the three dots next to the service account in the list and click 'manage keys'
    2. click 'add key' > 'create new key' button 
