@@ -20,10 +20,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
     - name: Checkout
       uses: actions/checkout@v2
     
-    - name: Install
+    - name: Install Dev Dependencies
+      run: make install_dev
+
+    - name: Lint and Test
+      run: |
+        make lint
+        make test
+    
+    - name: Clean
+      run: make cean 
+
+    - name: Install Dependencies
       run: make install
     
     - name: Deploy to App Engine
