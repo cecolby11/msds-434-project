@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.x"
       - uses: actions/checkout@v2
-      - name: setup
+      - name: Setup
         run: make setup
       - name: Install Dev dependencies
         run: make install_dev
@@ -38,6 +38,7 @@ jobs:
   deploy:
     name: Deploying to Google Cloud
     runs-on: ubuntu-latest
+    needs: lint_test
 
     steps:
       - uses: actions/setup-python@v2
