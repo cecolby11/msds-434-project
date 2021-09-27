@@ -96,7 +96,7 @@ jobs:
             command: apt-get install google-cloud-sdk-app-engine-python
         - deploy:
             name: Deploying to App Engine
-            command: gcloud app deploy app.yaml
+            command: gcloud app deploy
 
 workflows:
     version: 2
