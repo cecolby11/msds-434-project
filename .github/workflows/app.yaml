@@ -26,20 +26,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    - name: Install Dev Dependencies
-      run: make install_dev
-
-    - name: Lint and Test
-      run: |
-        make lint
-        make test
-    
-    - name: Clean
-      run: make cean 
-
-    - name: Install Dependencies
-      run: make install
-    
     - name: Deploy to App Engine
       id: deploy
       uses: google-github-actions/deploy-appengine@v0.2.0
