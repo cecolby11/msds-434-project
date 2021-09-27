@@ -28,7 +28,7 @@
       3.  jk ended up just pasting in the json as-is and putting it in a json file as a step in the job and it worked! 
 4. enable app engine APIs on the google cloud project to deploy with gcloud app deploy, and enable compute APIs to set default zone with set compute/zone command
 5. Create a new GAE app in the console or command line (you can only use CD to deploy to an existing app, not to conditionally create one if it's not there)
-  
+6. you don't need the install dependencies stage in the gcloud app deploy pipeline, it installs them from requirements.txt it seems. 
 
 https://localghost.dev/2019/12/deploying-your-google-appengine-app-with-circleci/
 
