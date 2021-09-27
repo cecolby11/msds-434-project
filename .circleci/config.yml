@@ -110,3 +110,5 @@ workflows:
             filters:
                 branches:
                     only: GP-28_gae-hello-world
+            requires:
+            - lint_test
