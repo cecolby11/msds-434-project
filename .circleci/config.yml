@@ -30,10 +30,6 @@ jobs:
                 - ./venv
             key: v1-dependencies-{{ checksum "requirements.txt" }}
         # use persist to workspace to persist between jobs in one workflow
-        - persist_to_workspace:
-            root: ~/
-            paths:
-                - "project"
         - run:
             name: lint code
             command: |
@@ -44,6 +40,9 @@ jobs:
             command: |
                 . venv/bin/activate
                 make test
+        - run:
+            name: clean up
+            command: make clean
     build:
         docker:
         - image: circleci/python:3.9.0 # executor for the build job
@@ -70,10 +69,10 @@ jobs:
                 - ./venv
             key: v1-dependencies-{{ checksum "requirements.txt" }}
         # use persist to workspace to persist between jobs in one workflow
-        - persist_to_workspace:
-            root: ~/
-            paths:
-                - "project"
+        # - persist_to_workspace:
+        #     root: ~/
+        #     paths:
+        #         - "project"
     
     deploy: 
         docker:
@@ -82,8 +81,8 @@ jobs:
         working_directory: ~/project
 
         steps:
-        - attach_workspace:
-            at: ~/
+        # - attach_workspace:
+        #     at: ~/
         - checkout # checkout source code to working directory
         - run:
             name: Set up gcloud config
