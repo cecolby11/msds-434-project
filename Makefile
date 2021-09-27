@@ -2,20 +2,20 @@ setup:
 	python3 -m venv venv
 
 install_dev: 
-	. venv/bin/activate &&\
+	source venv/bin/activate &&\
 	pip install -r requirements_dev.txt
 
 install: 
-	. venv/bin/activate &&\
+	source venv/bin/activate &&\
 	pip install -r requirements.txt
 
 test: 
-	. venv/bin/activate &&\
+	source venv/bin/activate &&\
 	pytest -vv --cov=. tests/*.py
 
 lint:
     # only show warnings and errors for continuous delivery project
-	. venv/bin/activate &&\
+	source venv/bin/activate &&\
 	pylint --disable=R,C web_service
 
 clean:
