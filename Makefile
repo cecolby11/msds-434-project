@@ -16,7 +16,7 @@ test:
 lint:
     # only show warnings and errors for continuous delivery project
 	. venv/bin/activate &&\
-	pylint --disable=R,C web_service
+	pylint --disable=R,C ./main.py
 
 clean:
 	rm -rf venv
