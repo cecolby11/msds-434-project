@@ -80,9 +80,11 @@ jobs:
         - image: google/cloud-sdk
 
         working_directory: ~/project
+
         steps:
         - attach_workspace:
             at: ~/
+        - checkout # checkout source code to working directory
         - run:
             name: Set up gcloud config
             command: |
@@ -97,9 +99,7 @@ jobs:
         - deploy:
             name: Deploying to App Engine
             command: |
-                pwd
-                ls
-                gcloud app deploy ./app.yaml
+                gcloud app deploy
 
 workflows:
     version: 2
