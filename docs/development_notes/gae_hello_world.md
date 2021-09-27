@@ -13,6 +13,9 @@
 ## Setting up GCP App Engine Deploy with CircleCI
 1. create a service account in GCP console 
    1. add app engine admin permissions 
+   2. add storage object admin permissions
+   3. add storage admin permissions
+   4. also note if you change the permissions/roles, you have to wait a few minutes for them to take effect it seems.
 2. create key and download as json 
    1. click the three dots next to the service account in the list and click 'manage keys'
    2. click 'add key' > 'create new key' button 
