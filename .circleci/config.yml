@@ -101,6 +101,7 @@ jobs:
                 gcloud app deploy
 
 workflows:
+    version: 2
     deploy:
         jobs:
         - lint_test
