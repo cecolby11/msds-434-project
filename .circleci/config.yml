@@ -105,6 +105,7 @@ workflows:
     version: 2
     deploy:
         jobs:
+        - lint_test
         - deploy:
             filters:
                 branches:
