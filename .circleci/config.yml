@@ -73,7 +73,6 @@ jobs:
         #     root: ~/
         #     paths:
         #         - "project"
-    
     deploy: 
         docker:
         - image: google/cloud-sdk
@@ -99,7 +98,6 @@ jobs:
             name: Deploying to App Engine
             command: |
                 gcloud app deploy
-
 workflows:
     version: 2
     deploy:
