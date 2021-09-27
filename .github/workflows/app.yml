@@ -20,16 +20,20 @@ concurrency:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   lint_test:
+    name: Lint and Test Application Code
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: 3.8
-      - name: lint code
+          python-version: "3.x"
+      - uses: actions/checkout@v2
+      - name: setup
+        run: make setup
+      - name: Install Dev dependencies
+        run: make install_dev
+      - name: Lint Code
         run: make lint
-      - name: test code
+      - name: Test Code
         run: make test
   deploy:
     name: Deploying to Google Cloud
