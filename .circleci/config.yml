@@ -100,12 +100,9 @@ jobs:
 
 workflows:
     version: 2
-    build_deploy:
+    deploy:
         jobs:
-        - build
         - deploy:
             filters:
                 branches:
                     only: GP-28_gae-hello-world
-            requires:
-                - build
