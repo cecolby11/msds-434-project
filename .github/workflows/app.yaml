@@ -23,11 +23,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    - name: Lint
-      run: make lint
-    
-    - name: Test
-      run: make test
+    - name: Install
+      run: make install
     
     - name: Deploy to App Engine
       id: deploy
