@@ -73,7 +73,7 @@ jobs:
         #     root: ~/
         #     paths:
         #         - "project"
-    deploy: 
+    deploy:
         docker:
         - image: google/cloud-sdk
 
@@ -90,7 +90,7 @@ jobs:
 
                 gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
                 gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
-                gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}         
+                gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
         - run: 
             name: Install GAE Python Component
             command: apt-get install google-cloud-sdk-app-engine-python
