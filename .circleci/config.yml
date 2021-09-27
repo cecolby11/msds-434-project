@@ -4,78 +4,108 @@
 #
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/python:3.9.0 # executor for the build job
+    lint_test:
+        docker:
+        - image: circleci/python:3.9.0 # executor for the build job
 
-    working_directory: ~/project
+        working_directory: ~/project
 
-    steps:
-      - checkout # checkout source code to working directory
+        steps:
+        - checkout # checkout source code to working directory
 
-      # Download and cache dependencies using checksum on requirements.txt
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+        # Download and cache dependencies using checksum on requirements.txt
+        - restore_cache:
+            keys:
+                - v1-dependencies-{{ checksum "requirements.txt" }}
+                # fallback to using the latest cache if no exact match is found
+                - v1-dependencies-
 
-      - run:
-          name: install dependencies
-          command: |
-            make setup
-            make install
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-      # use persist to workspace to persist between jobs in one workflow
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - "project"
-    #   - run:
-    #       name: lint code
-    #       command: |
-    #         . venv/bin/activate
-    #         make lint
-    #   - run:
-    #       name: test code
-    #       command: |
-    #         . venv/bin/activate
-    #         make test
-  
-  deploy: 
-    docker:
-      - image: google/cloud-sdk
+        - run:
+            name: install dependencies
+            command: |
+                make setup
+                make install_dev
+        - save_cache:
+            paths:
+                - ./venv
+            key: v1-dependencies-{{ checksum "requirements.txt" }}
+        # use persist to workspace to persist between jobs in one workflow
+        - persist_to_workspace:
+            root: ~/
+            paths:
+                - "project"
+        - run:
+            name: lint code
+            command: |
+                . venv/bin/activate
+                make lint
+        - run:
+            name: test code
+            command: |
+                . venv/bin/activate
+                make test
+    build:
+        docker:
+        - image: circleci/python:3.9.0 # executor for the build job
 
-    working_directory: ~/project
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Set up gcloud config
-          command: |
-            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+        working_directory: ~/project
 
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
-            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}         
-      - run: 
-          name: Install GAE Python Component
-          command: apt-get install google-cloud-sdk-app-engine-python
-      - deploy:
-          name: Deploying to App Engine
-          command: gcloud app deploy app.yaml
+        steps:
+        - checkout # checkout source code to working directory
+
+        # Download and cache dependencies using checksum on requirements.txt
+        - restore_cache:
+            keys:
+                - v1-dependencies-{{ checksum "requirements.txt" }}
+                # fallback to using the latest cache if no exact match is found
+                - v1-dependencies-
+
+        - run:
+            name: install dependencies
+            command: |
+                make setup
+                make install
+        - save_cache:
+            paths:
+                - ./venv
+            key: v1-dependencies-{{ checksum "requirements.txt" }}
+        # use persist to workspace to persist between jobs in one workflow
+        - persist_to_workspace:
+            root: ~/
+            paths:
+                - "project"
+    
+        deploy: 
+            docker:
+            - image: google/cloud-sdk
+
+            working_directory: ~/project
+            steps:
+            - attach_workspace:
+                at: ~/
+            - run:
+                name: Set up gcloud config
+                command: |
+                    echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+
+                    gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+                    gcloud --quiet config set compute/region ${GOOGLE_COMPUTE_REGION}
+                    gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}         
+            - run: 
+                name: Install GAE Python Component
+                command: apt-get install google-cloud-sdk-app-engine-python
+            - deploy:
+                name: Deploying to App Engine
+                command: gcloud app deploy
 
 workflows:
-  version: 2
-  build_deploy:
-    jobs:
-      - build
-      - deploy:
-          filters:
-            branches:
-              only: GP-28_gae-hello-world
-          requires:
-            - build
+    version: 2
+    build_deploy:
+        jobs:
+        - build
+        - deploy:
+            filters:
+                branches:
+                    only: GP-28_gae-hello-world
+            requires:
+                - build

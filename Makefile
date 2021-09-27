@@ -1,6 +1,10 @@
 setup: 
 	python3 -m venv venv
-	
+
+install_dev: 
+	. venv/bin/activate &&\
+	pip install -r requirements_dev.txt
+
 install: 
 	. venv/bin/activate &&\
 	pip install -r requirements.txt
