@@ -8,6 +8,7 @@
   - Storage
   - App Engine
   - Cloud Functions
+- Create a new private storage bucket for your account terraform state files, if you would like to use remote state. Configure the bucket name and the absolute path to your credentials file in `state.tf`.
 
 ### Build 
 ```bash
@@ -17,3 +18,7 @@ terraform plan
 # verify planned changes are as expected
 terraform apply
 ```
+
+
+## TODO 
+- import the GAE application into the terraform state and manage it with terraform - that would solve the problem of creating it before starting the circle ci app deploy to update it with the code. 
