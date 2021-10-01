@@ -1,5 +1,0 @@
-cron:
-- description: "populate big query from csv on schedule"
-  url: /batch
-  target: service-name
-  schedule: every 24 hours
