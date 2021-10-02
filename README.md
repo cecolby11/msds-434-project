@@ -1,5 +1,5 @@
 # msds-434-project
-[![cecolby11](https://circleci.com/gh/cecolby11/msds-434-project.svg?style=shield&circle-token=521d5ab299a5ba339ebaa449aa01b386bfd49585)](https://circleci.com/gh/cecolby11/msds-434-project)
+![example workflow Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/app.yml/badge.svg)
 
 ## Directory Structure
 ```
