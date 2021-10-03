@@ -12,5 +12,5 @@ variable "env" {}
 
 # Lambda
 variable "cf_etl_source_dir" {}
-variable "cf_etl_output_path" {}
+variable "cf_etl_output_dir" {}
 variable "cf_etl_entry_point" {}

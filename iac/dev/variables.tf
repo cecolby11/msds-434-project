@@ -8,6 +8,6 @@ module "dev" {
 
   # lambdas
   cf_etl_source_dir  = "../etl_src"  # App code source directory for cloud function
-  cf_etl_output_path = "../etl_dist/index.zip" # Build output for the cloud function .zip file
+  cf_etl_output_dir = "../etl_dist" # Build output dir for the cloud function .zip file
   cf_etl_entry_point = "handler"
 }
