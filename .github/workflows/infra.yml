@@ -1,0 +1,58 @@
+name: Build and Deploy
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# this only allows one job to run for each env at a time
+concurrency:
+  group: environment-${{ github.ref }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  terraform:
+    name: Build Terraform Infrastructure as Code
+    runs-on: ubuntu-latest
+    env:
+      BUILD_ENV: dev
+      TERRAFORM_BUILD_DIRECTORY: 'iac/${BUILD_ENV}'
+
+    steps: 
+      - name: Setup Terraform 🧱
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.0
+          terraform_wrapper: false
+      - name: Terraform Init 🧱
+        env:
+          # note that the format function is like search-and-replace for {0}
+          # note the ternary operator formatting for the replacement: (condition && value1) || value2
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('TF_KEY_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('TF_SECRET_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+        run: |
+          cd ${{ env.TERRAFORM_BUILD_DIRECTORY }}
+          terraform init
+      - name: Terraform Plan 🧱
+        env:
+          # note that the format function is like search-and-replace for {0}
+          # note the ternary operator formatting for the replacement: (condition && value1) || value2
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('TF_KEY_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('TF_SECRET_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+        run: |
+          cd ${{ env.TERRAFORM_BUILD_DIRECTORY }}
+          terraform plan
+
+      - name: Terraform Apply and Output 🧱
+        env:
+          # note that the format function is like search-and-replace for {0}
+          # note the ternary operator formatting for the replacement: (condition && value1) || value2
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('TF_KEY_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('TF_SECRET_ADO_{0}', (ENV.BUILD_ENV == 'PROD' && 'PROD') || 'NONPROD') ] }}
+        run: |
+          cd ${{ env.TERRAFORM_BUILD_DIRECTORY }}
+          terraform apply -auto-approve

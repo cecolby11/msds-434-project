@@ -1,25 +1,23 @@
 resource "google_bigquery_dataset" "nyt" {
-  dataset_id                  = "latest_nyt_dataset"
-  friendly_name               = "nyt_latest"
-  description                 = "This is a test description"
-  location                    = "US"
+  dataset_id    = "latest_nyt_${var.env}"
+  friendly_name = "nyt_latest_${var.env}"
+  description   = "This is a test description"
+  location      = "US"
 
-  labels = {
-    env = "default"
-    terraform = true
-  }
+  labels = local.labels
 }
 
 resource "google_bigquery_table" "nyt" {
   dataset_id = google_bigquery_dataset.nyt.dataset_id
-  table_id   = "county_cases_deaths"
+  table_id   = "county_cases_deaths-${var.env}"
 
-  labels = {
-    env = "default"
-    terraform = true
-  }
+  labels = local.labels
+  # NOTE: : On newer versions of the provider, you must explicitly set deletion_protection=false (and run terraform apply to write the field to state) in order to destroy an instance. 
+  # It is recommended to not set this field (or set it to true) until you're ready to destroy.
+  deletion_protection = true
 
-# date,county,state,fips,cases,deaths
+
+  # date,county,state,fips,cases,deaths
   schema = <<EOF
 [
   {
