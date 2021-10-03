@@ -27,3 +27,5 @@ tests
 .pytest_cache
 .coverage
 .DS_Store
+iac
+.terraform-version

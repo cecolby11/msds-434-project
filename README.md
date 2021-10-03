@@ -26,5 +26,6 @@ make all
 
 ## Run Flask API locally 
 ```bash
+cd gae_web_service
 python main.py
 ```

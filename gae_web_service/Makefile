@@ -19,6 +19,7 @@ lint:
 	pylint --disable=R,C ./main.py
 
 clean:
+	deactivate
 	rm -rf venv
 
 all: setup install lint test clean
