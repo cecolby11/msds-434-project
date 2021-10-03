@@ -45,6 +45,9 @@ jobs:
     name: Deploying to Google Cloud
     runs-on: ubuntu-latest
     needs: lint_test
+    defaults:
+      run:
+        working-directory: ${{ env.WEB_APP_DIR }}
 
     steps:
       - uses: actions/setup-python@v2

@@ -38,6 +38,5 @@ terraform plan
 terraform apply
 ```
 
-
 ## TODO 
 - import the GAE application into the terraform state and manage it with terraform - that would solve the problem of creating it before starting the circle ci app deploy to update it with the code. 
