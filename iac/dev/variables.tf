@@ -1,10 +1,8 @@
 module "dev" {
   # globals
   source   = "../modules"
-  # project_id = "local-cedar-327215"
-  project_id = "msds-434-dev"
-  # credentials_filepath = "/users/caseycolby/.ssh/terraform@local-cedar-327215-43b157a3e5c7.json"
-  credentials_filepath = "/users/caseycolby/.ssh/terraform@msds-434-dev-3f00f7b5c048.json"
+  project_id = "dev-327916"
+  credentials_filepath = "/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json"
   app_name = "covid_project"
   env      = "dev"
 
