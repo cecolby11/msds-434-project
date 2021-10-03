@@ -65,3 +65,6 @@ jobs:
           version: v1
           # project_id: ${{ steps.tf_output.outputs.gcp_project_id }} # optional, to override the project set by config from key. 
           credentials: ${{ secrets.GCLOUD_KEY_DEV }}
+      - name: Output GAE URL
+        run: |
+          echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
