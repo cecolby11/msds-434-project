@@ -16,19 +16,21 @@
   - Cloud Functions API
   - Cloud Build API (gcp uses in cloud function deployment)
   - Resource Manager API
-- Per project: Create a new service account for the CICD tool (CircleCI, GitHub Actions, etc.) in console 
-  - give it the following roles:
-    - app engine admin  (to provision resources in the account)
+- Per project: ~~Create a new service account for the CICD tool (CircleCI, GitHub Actions, etc.) in console and give it the following roles:~~ A service account is terraformed for CICD named `cicd-deploy-gae` with the following roles: 
     - storage object admin 
-    - storage admin 
     - service account user 
     - app engine deployer 
     - cloud build service account 
-  - create a new key and download it. save it as an environment variable/secret in your CICD project to use in the workflow
+  - create a new key via the console on the service account and download the JSON. save it as an environment variable/secret in your CICD project to use in the workflow (base64 encode the json you downloaded to add it to variables: in terminal on your machine, run `cat path/to/your/credentials.json | base64 | pbcopy`)
 - Per project: Create a new private storage bucket for your account terraform state files, if you would like to use remote state. Configure the bucket name and the absolute path to your credentials file in `state.tf` (or if you are creating a new envivronment, update the 'prefix' in the `state.tf` file to save your environment's state at a new path in the existing bucket). 
 
 ### Build 
 ```bash
+# set the path to the key using the cli's APPLICATION_GOOGLE_CREDENTIALS environment variable instead of hardcoding it in the provider 
+# this enables you to run the terraform the same way from github actions workflow, or your command line
+# the terraform action uses the variable GOOGLE_CREDENTIALS 
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
+# e.g. export GOOGLE_APPLICATION_CREDENTIALS="/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json" 
 cd iac
 terraform init
 terraform plan

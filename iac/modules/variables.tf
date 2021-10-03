@@ -6,7 +6,6 @@ variable  "project_region" {
 variable "project_zone" {
     default = "us-central1-a"
 }
-variable "credentials_filepath" {}
 variable "app_name" {}
 variable "env" {}
 

@@ -2,7 +2,6 @@ module "dev" {
   # globals
   source               = "../modules"
   project_id           = "dev-327916"
-  credentials_filepath = "/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json"
   app_name             = "covid_project"
   env                  = "dev"
 
