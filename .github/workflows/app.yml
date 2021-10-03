@@ -52,3 +52,6 @@ jobs:
           version: v1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           credentials: ${{ secrets.GCP_KEY }}
+      - name: Output GAE URL
+        run: |
+          echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
