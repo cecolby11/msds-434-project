@@ -18,11 +18,12 @@ exports.ingest = async (req, res) => {
     const axiosResponse = await axios.get(url, { responseType: 'stream' });
     axiosResponse.data.pipe(fs.createWriteStream(tmpFileName));
     // drop it in storage bucket
+    // request and response format: https://googleapis.dev/nodejs/storage/latest/Bucket.html#upload
     const storageResponse = await storage.bucket(bucketName).upload(tmpFileName, {
       destination: `us-${Date.now()}.csv`,
     });
-    console.log(`CREATED STORAGE OBJECT WITH ID: ${storageResponse.id}`);
-    res.send('success');
+    console.log(`CREATED STORAGE OBJECT WITH ID: ${storageResponse[1].id}`);
+    res.send(storageResponse[1].id);
   } catch (err) {
     console.error('AN ERROR OCCURRED');
     console.error(err);
