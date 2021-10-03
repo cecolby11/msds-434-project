@@ -11,6 +11,7 @@ variable "app_name" {}
 variable "env" {}
 
 # Lambda
-variable "cf_etl_source_dir" {}
+variable "cf_ingest_source_dir" {}
+variable "cf_load_source_dir" {}
 variable "cf_etl_output_dir" {}
-variable "cf_etl_entry_point" {}
+variable "etl_invoke_schedule" {}

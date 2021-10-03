@@ -1,5 +1,5 @@
 {
-  "name": "etl_src",
+  "name": "etl_ingest",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google-cloud/bigquery": "^5.9.0",
     "@google-cloud/storage": "^5.14.4",
     "axios": "^0.22.0"
   },
