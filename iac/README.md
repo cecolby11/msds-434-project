@@ -26,8 +26,9 @@
 
 ### Build 
 ```bash
-# set the path to the key using the cli's APPLICATION_GOOGLE_CREDENTIALS environment variable instead of hardcoding it in the provider 
-# this enables you to run the terraform the same way from github actions workflow, or your command line
+# set the path to the key using the cli's export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
+ environment variable instead of hardcoding it in the provider 
+# this enables you to run the terraform the same way whether from github actions workflow, or your command line
 # the terraform action uses the variable GOOGLE_CREDENTIALS 
 export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
 # e.g. export GOOGLE_APPLICATION_CREDENTIALS="/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json" 

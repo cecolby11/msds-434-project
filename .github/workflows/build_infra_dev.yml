@@ -27,7 +27,7 @@ jobs:
     name: Build Infra from Terraform IaC
     runs-on: ubuntu-latest
     env: 
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_KEY_DEV }}
+      GOOGLE_CREDENTIALS: ${{ secrets.GCLOUD_KEY_DEV }}
     # set working directory for all of the job commands to be executed from
     defaults:
       run:
