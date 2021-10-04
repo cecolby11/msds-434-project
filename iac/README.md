@@ -22,7 +22,8 @@
     - app engine deployer 
     - cloud build service account 
   - create a new key via the console on the service account and download the JSON. save the content as an environment variable/secret in the CICD project (e.g. GitHub secret) to use in the workflow (if you base64 encode it, need to decode it in the workflow before passing it to GOOGLE_CREDENTIALS)
-- Per project: Create a new private storage bucket for your account terraform state files, if you would like to use remote state. Configure the bucket name and the absolute path to your credentials file in `state.tf` (or if you are creating a new envivronment, update the 'prefix' in the `state.tf` file to save your environment's state at a new path in the existing bucket). 
+- Per project: Create a new private storage bucket for your account terraform state files, if you would like to use remote state. Configure the bucket name and the absolute path to your credentials file in `state.tf` 
+
 
 ### Build 
 ```bash
