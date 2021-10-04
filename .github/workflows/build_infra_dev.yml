@@ -17,7 +17,7 @@ concurrency:
 
 env:
   BUILD_ENV: dev
-  TERRAFORM_DIR: ./iac/${BUILD_ENV}
+  TERRAFORM_DIR: './iac/${BUILD_ENV}'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
