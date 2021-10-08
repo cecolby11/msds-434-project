@@ -26,3 +26,5 @@ if (process.env.LOCAL_DEV === 'true') {
         console.log(`app listening at http://localhost:8080`)
      });
 }
+
+module.exports = app;
