@@ -3,7 +3,7 @@ resource "google_storage_bucket" "cf_deployment_code" {
 }
 
 resource "google_storage_bucket" "csv" {
-  name                        = "${var.project_id}_nyt-us-states-latest_${var.env}" # use project id to ensure it's unique
+  name                        = "${var.app_name}_nyt-us-states-latest_${var.env}" # ensure globally unique
   force_destroy               = true # delete files to delete bucket
   location                    = "US"
   uniform_bucket_level_access = true

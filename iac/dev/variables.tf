@@ -2,7 +2,7 @@ module "dev" {
   # globals
   source               = "../modules"
   project_id           = "dev-327916"
-  app_name             = "covid_project"
+  app_name             = "msds434_covid19"
   env                  = "dev"
 
   # lambdas

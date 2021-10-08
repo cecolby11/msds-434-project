@@ -17,7 +17,7 @@
   - Cloud Build API (gcp uses in cloud function deployment)
   - Resource Manager API
   - Big Query API
-  - Data Studio API (for visualizing data from big query models)
+  - Big Query Transfer Service (for scheduling big query forecasting)
 - Per project: ~~Create a new service account for the CICD tool (CircleCI, GitHub Actions, etc.) in console and give it the following roles:~~ A service account is terraformed for CICD named `cicd-deploy-gae` with the following roles: 
     - storage object admin 
     - service account user 
