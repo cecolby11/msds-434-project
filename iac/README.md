@@ -16,6 +16,8 @@
   - Cloud Functions API
   - Cloud Build API (gcp uses in cloud function deployment)
   - Resource Manager API
+  - Big Query API
+  - Big Query Transfer Service (for scheduling big query forecasting)
 - Per project: ~~Create a new service account for the CICD tool (CircleCI, GitHub Actions, etc.) in console and give it the following roles:~~ A service account is terraformed for CICD named `cicd-deploy-gae` with the following roles: 
     - storage object admin 
     - service account user 
@@ -39,6 +41,3 @@ terraform plan
 # verify planned changes are as expected
 terraform apply
 ```
-
-## TODO 
-- import the GAE application into the terraform state and manage it with terraform - that would solve the problem of creating it before starting the circle ci app deploy to update it with the code. 
