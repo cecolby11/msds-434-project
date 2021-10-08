@@ -21,10 +21,12 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     }
 });
 
-if (process.env.LOCAL_DEV === 'true') {
-    app.listen(8080, () => {
-        console.log(`app listening at http://localhost:8080`)
-     });
-}
+
+// Start the server
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});
 
 module.exports = app;
