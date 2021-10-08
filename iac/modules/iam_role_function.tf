@@ -63,23 +63,23 @@ resource "google_project_iam_custom_role" "load_storage_operations" {
 }
 
 resource "google_bigquery_table_iam_member" "load" {
-  project    = google_bigquery_table.nyt.project
-  dataset_id = google_bigquery_table.nyt.dataset_id
-  table_id   = google_bigquery_table.nyt.table_id
+  project    = google_bigquery_table.nyt_states.project
+  dataset_id = google_bigquery_table.nyt_states.dataset_id
+  table_id   = google_bigquery_table.nyt_states.table_id
   # role = "roles/bigquery.dataOwner"
   role   = google_project_iam_custom_role.load_table_permissions.id
   member = "serviceAccount:${google_service_account.etl_load.email}"
 }
 
 resource "google_bigquery_dataset_iam_member" "load" {
-  project    = google_bigquery_table.nyt.project
-  dataset_id = google_bigquery_table.nyt.dataset_id
+  project    = google_bigquery_table.nyt_states.project
+  dataset_id = google_bigquery_table.nyt_states.dataset_id
   role       = google_project_iam_custom_role.load_dataset_permissions.id
   member     = "serviceAccount:${google_service_account.etl_load.email}"
 }
 
 resource "google_project_iam_member" "load" {
-  project = google_bigquery_table.nyt.project
+  project = google_bigquery_table.nyt_states.project
   role    = google_project_iam_custom_role.load_project_permissions.id
   member  = "serviceAccount:${google_service_account.etl_load.email}" # bigquery.jobs.create is required on the PROJECT
 }

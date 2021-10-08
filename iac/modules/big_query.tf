@@ -7,9 +7,9 @@ resource "google_bigquery_dataset" "nyt" {
   labels = local.labels
 }
 
-resource "google_bigquery_table" "nyt" {
+resource "google_bigquery_table" "nyt_states" {
   dataset_id = google_bigquery_dataset.nyt.dataset_id
-  table_id   = "us_cases_deaths-${var.env}"
+  table_id   = "us_states_cases_deaths-${var.env}"
 
   labels = local.labels
   # NOTE: : On newer versions of the provider, you must explicitly set deletion_protection=false (and run terraform apply to write the field to state) in order to destroy an instance. 
@@ -24,6 +24,16 @@ resource "google_bigquery_table" "nyt" {
     "mode": "NULLABLE"
   },
   {
+    "name": "state",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "fips",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
     "name": "cases",
     "type": "INTEGER",
     "mode": "NULLABLE"
@@ -33,7 +43,7 @@ resource "google_bigquery_table" "nyt" {
     "type": "INTEGER",
     "mode": "NULLABLE"
   },
-    {
+  {
     "name": "confirmed_cases",
     "type": "INTEGER",
     "mode": "NULLABLE"

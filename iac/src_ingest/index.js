@@ -14,7 +14,7 @@ exports.ingest = async (req, res) => {
   try {
     console.log('function invoked by HTTP');
     // use axios to download the latest day of data from NYT GitHub 
-    const url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us.csv'; // us for initial development because counties quite large
+    const url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-states.csv';
     const axiosResponse = await axios.get(url, { responseType: 'stream' });
     axiosResponse.data.pipe(fs.createWriteStream(tmpFileName));
     // drop it in storage bucket

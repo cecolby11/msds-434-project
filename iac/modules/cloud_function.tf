@@ -75,9 +75,9 @@ resource "google_cloudfunctions_function" "etl_load" {
   labels      = local.labels
   environment_variables = {
     ETL_BQ_DATASET_ID       = google_bigquery_dataset.nyt.dataset_id
-    ETL_BQ_TABLE_LOCATION   = google_bigquery_table.nyt.location
-    ETL_BQ_TABLE_ID         = google_bigquery_table.nyt.table_id
+    ETL_BQ_TABLE_LOCATION   = google_bigquery_table.nyt_states.location
+    ETL_BQ_TABLE_ID         = google_bigquery_table.nyt_states.table_id
     ETL_STORAGE_BUCKET_NAME = google_storage_bucket.csv.name
-    ETL_BQ_SCHEMA           = google_bigquery_table.nyt.schema
+    ETL_BQ_SCHEMA           = google_bigquery_table.nyt_states.schema
   }
 }
