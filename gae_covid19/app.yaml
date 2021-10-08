@@ -18,10 +18,4 @@ service: covid19
 env_variables:
   ENV: "dev"
 
-handlers:
-# - url: /stylesheets
-#   static_dir: stylesheets
-- url: /.*
-script: auto
-secure: always
-redirect_http_response_code: 301
+
