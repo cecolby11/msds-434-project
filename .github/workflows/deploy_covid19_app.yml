@@ -13,9 +13,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# this only allows one job to run for each env at a time
+# this only allows one job to run for project at a time
 concurrency:
-  group: environment-${{ github.ref }}
+  group: environment-${{ github.repository }}
 
 env:
   BUILD_ENV: dev
