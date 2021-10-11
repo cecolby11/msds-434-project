@@ -14,7 +14,11 @@ app.get('/', (req, res) => {
 
 app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     try {
-        const results = await bq.forecastCumulativeCases(req.params.state);
+        const rows = await bq.forecastCumulativeCases(req.params.state);
+        const results = {
+            state: req.params.state,
+            results: rows,
+        };
         res.json(results);
     } catch (err) {
         res.send('An error occurred, please retry your request or contact an administrator');
