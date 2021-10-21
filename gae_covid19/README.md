@@ -8,3 +8,6 @@ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file/with/access/to/acc
 
 npm run start:local # starts a local development server
 ```
+
+## adding stackdriver
+<!-- https://cloud.google.com/logging/docs/setup/nodejs -->

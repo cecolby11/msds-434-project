@@ -1,10 +1,11 @@
 const { BigQuery } = require('@google-cloud/bigquery');
+const logger = require('../utils/logger');
 const bq = new BigQuery();
 
 module.exports = {
 
     async forecastCumulativeCases(state) {
-        console.log('getting weekly forecast for', state);
+        logger.info('getting weekly forecast for', state);
         try {
             const forecastCumulativeCases = `SELECT forecast_timestamp, forecast_value
             FROM \`latest_nyt_dev.covid19_weekly_cases_forecast_by_state\`
@@ -22,8 +23,8 @@ module.exports = {
 
             return rows;
         } catch (err) {
-            console.error('AN ERROR OCCURRED');
-            console.error(err);
+            logger.error('AN ERROR OCCURRED');
+            logger.error(err);
             return err;
         }
     },

@@ -1,6 +1,7 @@
 // NOTE: You do not need to include the node_modules folder when you manually upload code as a .zip file—you can successfully deploy your function without the the node_modules folder.
 const express = require('express');
 const bq = require('./apis/gcp_big_query');
+const logger = require('./utils/logger');
 
 // Create an Express object and routes (in order)
 const app = express();
@@ -29,8 +30,8 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
+  logger.info(`App listening on port ${PORT}`);
+  logger.info('Press Ctrl+C to quit.');
 });
 
 module.exports = app;
