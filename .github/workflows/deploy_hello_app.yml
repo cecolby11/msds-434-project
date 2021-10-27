@@ -6,11 +6,7 @@ name: Deploy GAE Default
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
-    paths:
-      - gae_web_service/**
-  pull_request:
-    branches: [main]
+    branches: [dev, main]
     paths:
       - gae_web_service/**
 
@@ -47,7 +43,7 @@ jobs:
       - name: Test Code
         run: make test
   deploy_dev:
-    if: github.event_name == 'pull_request'
+    if:  github.event.ref == 'refs/heads/dev'
     name: Deploying to Google Cloud
     env: 
       BUILD_ENV: dev

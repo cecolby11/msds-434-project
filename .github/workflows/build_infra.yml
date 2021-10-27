@@ -6,13 +6,10 @@ name: Build Infra in GCP
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
+    branches: [dev, main]
     paths:
       - iac/**
-  pull_request:
-    branches: [main]
-    paths:
-      - iac/**
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -24,7 +21,7 @@ concurrency:
 jobs:
   deploy_dev:
     name: Build Dev IaC
-    if: github.event_name == 'pull_request'
+    if:  github.event.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     env: 
       GOOGLE_CREDENTIALS: ${{ secrets.GCLOUD_KEY_DEV }}

@@ -6,11 +6,7 @@ name: Deploy GAE Covid19
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
-    paths:
-      - gae_covid19/**
-  pull_request:
-    branches: [main]
+    branches: [dev, main]
     paths:
       - gae_covid19/**
 
@@ -27,7 +23,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   deploy_dev:
-    if: github.event_name == 'pull_request'
+    if:  github.event.ref == 'refs/heads/dev'
     name: Deploying to Google Cloud
     env: 
       BUILD_ENV: dev
