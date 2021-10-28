@@ -70,7 +70,7 @@ jobs:
           credentials: ${{ secrets.GCLOUD_KEY_DEV }}
       - name: Output GAE URL
         run: |
-          echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
+          echo ENDPOINT: "${{ steps.deploy_dev.outputs.url }}"
   deploy_prod:
     if: github.event.ref == 'refs/heads/main'
     name: Deploying to Google Cloud
@@ -100,4 +100,4 @@ jobs:
           credentials: ${{ secrets.GCLOUD_KEY_PROD }}
       - name: Output GAE URL
         run: |
-          echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
+          echo ENDPOINT: "${{ steps.deploy_prod.outputs.url }}"
