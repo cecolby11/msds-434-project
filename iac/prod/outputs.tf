@@ -1,5 +1,3 @@
-# used by the offcycle jenkins job
-
 output "project_id" {
   value = module.dev.project_id
 }
