@@ -53,7 +53,8 @@ python main.py
   - you can't terraform a project resource without an organization. To create an organization, you have to be a Google Workspace and Cloud Identity customer. Therefore the project should be created via the console and project ID added to the `variables.tf` and `state.tf` in the `{env}` folder. 
 - Per project: Create a new private storage bucket for your account terraform state files. Configure the bucket name and the absolute path to your credentials file in `state.tf` 
 - Per project: Create a new service account for Terraform in console before running commands. Give it the following roles:
-    - project editor (to provision resources in the account besides app engine) OR project owner if you want to create a new app engine app (this project does provision app engine)
+    - project owner (because the project provisions a new app engine application, and you must have owner permissions if you are using the predefined roles - if we were to go from MVP to operationalizing this, would probably want to define custom roles and scope the permissions down as much as possible).
+    - Roles Administrator to create other IAM Roles
     - security admin (the set IAM Policy role is used in order to set the service account for the cloud function). 
     - storage object viewer (only if you need to run `terraform init -migrate-state`)
   - create a new JSON key on the service account and download it. Add the key to the GitHub repository secrets for use in  CICD. 
