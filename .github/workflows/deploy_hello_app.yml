@@ -1,12 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy GAE Default - DEV
+name: Deploy GAE Default
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
+    branches: [dev, main]
     paths:
       - gae_web_service/**
 
@@ -18,7 +18,6 @@ concurrency:
   group: environment-${{ github.ref }}
 
 env:
-  BUILD_ENV: dev
   WEB_APP_DIR: ./gae_web_service
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -43,8 +42,40 @@ jobs:
         run: make lint
       - name: Test Code
         run: make test
-  deploy:
+  deploy_dev:
+    if:  github.event.ref == 'refs/heads/dev'
     name: Deploying to Google Cloud
+    env: 
+      BUILD_ENV: dev
+    runs-on: ubuntu-latest
+    needs: lint_test
+    defaults:
+      run:
+        working-directory: ${{ env.WEB_APP_DIR }} # set for all run steps in the job
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x" # Version range or exact version of a Python version to use, using SemVer's version range syntax
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to App Engine
+        id: deploy
+        uses: google-github-actions/deploy-appengine@v0.4.0
+        with:
+          working_directory: ${{ env.WEB_APP_DIR }} # set here because actions don't honor default working directory
+          deliverables: app.yaml
+          version: v1
+          # project_id: ${{ steps.tf_output.outputs.gcp_project_id }} # optional, to override the project set by config from key. 
+          credentials: ${{ secrets.GCLOUD_KEY_DEV }}
+      - name: Output GAE URL
+        run: |
+          echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
+  deploy_prod:
+    if: github.event.ref == 'refs/heads/main'
+    name: Deploying to Google Cloud
+    env: 
+      BUILD_ENV: prod
     runs-on: ubuntu-latest
     needs: lint_test
     defaults:
@@ -66,7 +97,7 @@ jobs:
           deliverables: app.yaml
           version: v1
           # project_id: ${{ steps.tf_output.outputs.gcp_project_id }} # optional, to override the project set by config from key. 
-          credentials: ${{ secrets.GCLOUD_KEY_DEV }}
+          credentials: ${{ secrets.GCLOUD_KEY_PROD }}
       - name: Output GAE URL
         run: |
           echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
