@@ -17,3 +17,8 @@ resource "google_service_account" "etl_load" {
   account_id   = "etl-load"
   display_name = "Cloud Function Load Service Account"
 }
+
+resource "google_service_account" "bq_scheduled_query" {
+  account_id   = "bq-scheduled-query"
+  display_name = "Scheduled BQ Query Service Account"
+}

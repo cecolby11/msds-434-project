@@ -1,7 +1,7 @@
 # cloud scheduler uses app engine cron jobs to run 
 resource "google_cloud_scheduler_job" "etl_http_job" {
   name      = "${var.app_name}-invoke-etl-http-${var.env}"
-  schedule  = var.etl_invoke_schedule
+  # schedule  = var.etl_invoke_schedule
   time_zone = "America/Chicago"
 
   http_target {
