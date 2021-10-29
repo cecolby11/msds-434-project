@@ -9,7 +9,7 @@ resource "google_bigquery_data_transfer_config" "query_config" {
   schedule             = "every sunday 00:00"
   destination_dataset_id = google_bigquery_dataset.nyt.dataset_id
   params = {
-    destination_table_name_template = google_bigquery_table.weekly_forecast_by_state.id
+    destination_table_name_template = google_bigquery_table.weekly_forecast_by_state.table_id
     write_disposition               = "WRITE_TRUNCATE" # vs WRITE_APPEND
     query                           = file("${path.module}/bq_ml_forecast_us_cases/bq_forecast_from_model.sql")
   }
