@@ -3,7 +3,7 @@
 # if you are getting errors about invalid arguments in this without clarifying which, comment out service_account_name and you'll get more specific errors
 
 resource "google_bigquery_data_transfer_config" "query_config" {
-  depends_on = [google_project_iam_member.data_transfer]
+  depends_on = [google_project_iam_member.data_transfer, google_project_iam_member.data_transfer_bq_admin]
 
   display_name           = "Generate Weekly Forecasts of Covid Cumulative Cases by State"
   location               = "US"
