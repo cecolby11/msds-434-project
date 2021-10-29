@@ -2,7 +2,7 @@
 SELECT
  *
 FROM
- ML.FORECAST(MODEL latest_nyt_dev.forecast_cases_by_state,
+ ML.FORECAST(MODEL msds_434_project.forecast_cases_by_state,
              STRUCT(7 AS horizon, 0.9 AS confidence_level))
 
 -- helpful resources: 

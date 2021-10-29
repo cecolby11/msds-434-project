@@ -4,7 +4,7 @@
 # can view error in console > Query History (bottom of big query console) > Project History
 # to solve this, need the equivalent of checking the box in the console for "Save query results in a temporary table", aka adding those two properties
 resource "google_bigquery_job" "create_model" {
-  job_id = "create_model_us_cases_by_state_5"
+  job_id = "create_model_us_cases_by_state_${formatdate("YYYYMMDDhhmmss", timestamp())}"
 
   labels = local.labels
 
@@ -17,15 +17,3 @@ resource "google_bigquery_job" "create_model" {
   }
   
 }
-
-# # generate predictions from model 
-# creating this via big_query_data_transfer config instead in order to schedule it 
-# resource "google_bigquery_job" "predict_from_model" {
-#   job_id = "forecast_us_cases_predict_from_model"
-
-#   labels = local.labels
-
-#   query {
-#     query = file("${path.module}/bq_ml_forecast_us_cases/bq_forecast_from_model.sql")
-#   }
-# }
