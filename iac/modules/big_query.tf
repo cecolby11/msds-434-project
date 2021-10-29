@@ -1,6 +1,6 @@
 resource "google_bigquery_dataset" "nyt" {
-  dataset_id    = "latest_nyt_${var.env}"
-  friendly_name = "nyt_latest_${var.env}"
+  dataset_id    = "msds_434_project"
+  friendly_name = "msds_434_project"
   description   = "Covid 19 data, models, and forecasts for MSDS 434"
   location      = "US"
 
@@ -9,7 +9,7 @@ resource "google_bigquery_dataset" "nyt" {
 
 resource "google_bigquery_table" "nyt_states" {
   dataset_id = google_bigquery_dataset.nyt.dataset_id
-  table_id   = "nyt_cases-by-state_${var.env}"
+  table_id   = "etl_nyt_cases-by-state_${var.env}"
 
   labels = local.labels
   # NOTE: : On newer versions of the provider, you must explicitly set deletion_protection=false (and run terraform apply to write the field to state) in order to destroy an instance. 
@@ -65,5 +65,16 @@ resource "google_bigquery_table" "nyt_states" {
   }
 ]
 EOF
+
+}
+
+resource "google_bigquery_table" "weekly_forecast_by_state" {
+  dataset_id = google_bigquery_dataset.nyt.dataset_id
+  table_id   = "nyt_weekly_forecast_by_state_${var.env}"
+
+  labels = local.labels
+  # NOTE: : On newer versions of the provider, you must explicitly set deletion_protection=false (and run terraform apply to write the field to state) in order to destroy an instance. 
+  # It is recommended to not set this field (or set it to true) until you're ready to destroy.
+  deletion_protection = false // # @TODO: flip this to true once I have the infra how I want it 
 
 }
