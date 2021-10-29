@@ -6,7 +6,7 @@ resource "google_bigquery_data_transfer_config" "query_config" {
   location             = "US"
   data_source_id       = "scheduled_query"
   service_account_name = google_service_account.bq_scheduled_query.name
-  schedule             = "every sun"
+  schedule             = "every sunday"
   destination_dataset_id = google_bigquery_dataset.nyt.dataset_id
   params = {
     destination_table_name_template = google_bigquery_table.weekly_forecast_by_state.id
