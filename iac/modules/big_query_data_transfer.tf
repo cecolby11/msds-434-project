@@ -1,6 +1,6 @@
 # schedule query to run the prediction-generation every friday and save to big query 
 resource "google_bigquery_data_transfer_config" "query_config" {
-  depends_on = [google_project_iam_member.permissions]
+  depends_on = [google_project_iam_member.data_transfer]
 
   display_name         = "Generate Weekly Forecasts: Covid Cumulative Cases by State"
   location             = "US"
