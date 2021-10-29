@@ -7,7 +7,7 @@ module.exports = {
         console.log('getting weekly forecast for', state);
         try {
             const forecastCumulativeCases = `SELECT forecast_timestamp, forecast_value
-            FROM \`msds_434_project.forecast_cases_by_state\`
+            FROM \`msds_434_project.nyt_weekly_forecast_by_state_dev\`
             WHERE LOWER(state_name) = '${state.toLowerCase()}' AND
             forecast_timestamp > CURRENT_TIMESTAMP() AND forecast_timestamp < TIMESTAMP_ADD(CURRENT_TIMESTAMP, INTERVAL 7 DAY)`;
 
