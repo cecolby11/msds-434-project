@@ -2,8 +2,8 @@
 resource "google_bigquery_data_transfer_config" "query_config" {
   depends_on = [google_project_iam_member.data_transfer]
 
-  display_name         = "Generate Weekly Forecasts: Covid Cumulative Cases by State"
-  location             = var.project_region
+  display_name         = "Generate Weekly Forecasts of Covid Cumulative Cases by State"
+  location             = "US"
   data_source_id       = "scheduled_query"
   service_account_name = google_service_account.bq_scheduled_query.name
   schedule             = "every sunday 13:00"
