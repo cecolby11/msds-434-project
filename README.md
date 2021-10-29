@@ -57,6 +57,7 @@ python main.py
     - Roles Administrator to create other IAM Roles
     - security admin (the set IAM Policy role is used in order to set the service account for the cloud function). 
     - storage object viewer (only if you need to run `terraform init -migrate-state`)
+    - service account user (in order to create the big query data transfer config with a service account, the account calling the API needs to be able to impersonate the service account because it must be created with the same service account that will be invoking it)
   - create a new JSON key on the service account and download it. Add the key to the GitHub repository secrets for use in  CICD. 
 - Per project: Enable the necessary APIs in the console:
   - Note that if you enable the Cloud Resource Manager API in the console then you could terraform the rest of the API enablement used by the project, however API enablement can take a few minutes to propagate and so some resource creation will fail, but there seems to be a bug such that Terraform thinks it's been created and can't create it on the next apply. Therefore I'm doing it via the console. 

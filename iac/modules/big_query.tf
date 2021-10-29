@@ -70,7 +70,7 @@ EOF
 
 resource "google_bigquery_table" "weekly_forecast_by_state" {
   dataset_id = google_bigquery_dataset.nyt.dataset_id
-  table_id   = "nyt_weekly-forecast-by-state_${var.env}"
+  table_id   = "nyt_weekly_forecast_by_state_${var.env}"
 
   labels = local.labels
   # NOTE: : On newer versions of the provider, you must explicitly set deletion_protection=false (and run terraform apply to write the field to state) in order to destroy an instance. 
