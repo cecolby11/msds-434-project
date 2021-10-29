@@ -7,9 +7,6 @@ resource "google_bigquery_data_transfer_config" "query_config" {
   data_source_id       = "scheduled_query"
   service_account_name = google_service_account.bq_scheduled_query.name
   schedule             = "every sun"
-  schedule_options {
-    end_time = "December 13, 2021 at 10:34:27 PM UTC"
-  }
   destination_dataset_id = google_bigquery_dataset.nyt.dataset_id
   params = {
     destination_table_name_template = google_bigquery_table.weekly_forecast_by_state.id
