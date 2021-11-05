@@ -1,6 +1,6 @@
 # msds-434-project
-![Infra Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/build_infra_dev.yml/badge.svg)
-![Hello World API Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/deploy_app_dev.yml/badge.svg)
+![Infra Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/build_infra.yml/badge.svg)
+![Hello World API Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/deploy_hello_app.yml/badge.svg)
 ![BQ Covid19 API Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/deploy_covid19_app.yml/badge.svg)
 
 ## Directory Structure
