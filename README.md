@@ -91,3 +91,26 @@ terraform plan
 # verify planned changes are as expected
 terraform apply
 ```
+
+## Secure Application Checklist
+### Principle of Least Privilege 
+Seperate service accounts were created for the purposes below scoped only to the roles needed for the action
+- provisioning resources for Terraform IaC
+- CICD deploying application code to Google App Engine
+- Running the scheduled job in Big Query to generate predictions
+- Invoking the Extract Cloud Function on a cron via Cloud Scheduler 
+- Executing the Extract Cloud Function 
+- Executing the Load Cloud Function
+
+### Multiple Environments
+Separate environments are created for development and production with separate credentials and identical configuration.
+
+### No credentials committed to version control 
+The GCP Service Account Key is stored in the GitHub repository's secrets for use in the GitHub Actions workflows
+
+### Sanitize Inputs
+Use the Big Query Node.js library's [query parameters syntax](https://cloud.google.com/bigquery/docs/parameterized-queries#bigquery-query-params-nodejs) when the query includes user inputs (such as state name) in order to protect against SQL injection attacks. 
+
+## Future Security Todos
+-  [ ] Enforce HTTPS on Google App Engine endpoints
+-  [ ] Scope service account permissions down further to individual permissions in custom roles instead of using predefined GCP roles. 
