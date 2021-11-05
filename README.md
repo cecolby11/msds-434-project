@@ -111,6 +111,10 @@ The GCP Service Account Key is stored in the GitHub repository's secrets for use
 ### Sanitize Inputs
 Use the Big Query Node.js library's [query parameters syntax](https://cloud.google.com/bigquery/docs/parameterized-queries#bigquery-query-params-nodejs) when the query includes user inputs (such as state name) in order to protect against SQL injection attacks. 
 
+### Handle Errors Gracefully
+Catch errors and handle, to avoid returning any sensitive information. 
+
 ## Future Security Todos
 -  [ ] Enforce HTTPS on Google App Engine endpoints
 -  [ ] Scope service account permissions down further to individual permissions in custom roles instead of using predefined GCP roles. 
+-  [ ] API Authentication
