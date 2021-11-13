@@ -5,7 +5,7 @@ const bq = new BigQuery();
 module.exports = {
 
     async forecastCumulativeCases(state) {
-        logger.info('getting weekly forecast for', state);
+        logger.info(`getting weekly forecast for ${state}`, { state });
         try {
             const forecastCumulativeCases = `SELECT forecast_timestamp, forecast_value
             FROM \`msds_434_project.nyt_weekly_forecast_by_state\`
