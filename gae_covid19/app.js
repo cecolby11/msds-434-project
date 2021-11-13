@@ -17,7 +17,7 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     try {
         const rows = await bq.forecastCumulativeCases(req.params.state);
         if (rows.length === 0) {
-            res.status(404).json({
+            return res.status(404).json({
                 error: {
                     code: 404,
                     message: 'no predictions found for state'
@@ -28,9 +28,9 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
             state: req.params.state,
             results: rows,
         };
-        res.json(results);
+        return res.json(results);
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             error: {
                 code: 500,
                 message: 'no predictions found for state'
