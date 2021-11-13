@@ -17,7 +17,7 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     try {
         const rows = await bq.forecastCumulativeCases(req.params.state);
         if (rows.length === 0) {
-            logger.error(`Returning 404 for ${state}`, {
+            logger.error(`Returning 404 for ${req.params.state}`, {
                 httpRequest: {
                     status: 404,
                     requestUrl: req.url,
@@ -25,7 +25,7 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
                     remoteIp: req.connection.remoteAddress,
                     // etc.
                 },
-                state
+                state: req.params.state,
             });
             return res.status(404).json({
                 error: {
@@ -38,7 +38,7 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
             state: req.params.state,
             results: rows,
         };
-        logger.info(`Returning results for ${state}`, {
+        logger.info(`Returning results for ${req.params.state}`, {
             httpRequest: {
                 status: 200,
                 requestUrl: req.url,
@@ -46,11 +46,11 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
                 remoteIp: req.connection.remoteAddress,
                 // etc.
             },
-            state
+            state: req.params.state,
         });
         return res.json(results);
     } catch (err) {
-        logger.error(`Returning 500 for ${state}`, {
+        logger.error(`Returning 500 for ${req.params.state}`, {
             httpRequest: {
                 status: 500,
                 requestUrl: req.url,
@@ -58,7 +58,7 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
                 remoteIp: req.connection.remoteAddress,
                 // etc.
             },
-            state
+            state: req.params.state
         });
         return res.status(500).json({
             error: {
