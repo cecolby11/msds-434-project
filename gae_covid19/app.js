@@ -1,10 +1,12 @@
 // NOTE: You do not need to include the node_modules folder when you manually upload code as a .zip file—you can successfully deploy your function without the the node_modules folder.
 const express = require('express');
+const monitoring = require('@google-cloud/monitoring');
 const bq = require('./apis/gcp_big_query');
 const logger = require('./utils/logger');
   
 // Create an Express object and routes (in order)
 const app = express();
+const client = new monitoring.MetricServiceClient();
 
 app.get('/', (req, res) => {
     res.send(`<h4>Welcome</h4>
