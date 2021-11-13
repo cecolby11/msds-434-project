@@ -1,4 +1,4 @@
-CREATE OR REPLACE MODEL latest_nyt_dev.forecast_cases_by_state
+CREATE OR REPLACE MODEL msds_434_project.forecast_cases_by_state
 OPTIONS
   (model_type = 'ARIMA_PLUS',
    time_series_timestamp_col = 'date',
