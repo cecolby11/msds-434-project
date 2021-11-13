@@ -17,15 +17,9 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     try {
         const rows = await bq.forecastCumulativeCases(req.params.state);
         if (rows.length === 0) {
-            res.status(404).json({
-                error: {
-                    code: 404,
-                    message: 'no predictions found for state'
-                }
-            });
             logger.error(`Returning 404 for ${state}`, {
                 httpRequest: {
-                    status: res.statusCode,
+                    status: 404,
                     requestUrl: req.url,
                     requestMethod: req.method,
                     remoteIp: req.connection.remoteAddress,
@@ -33,16 +27,20 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
                 },
                 state
             });
-            return;
+            return res.status(404).json({
+                error: {
+                    code: 404,
+                    message: 'no predictions found for state'
+                }
+            });
         }
         const results = {
             state: req.params.state,
             results: rows,
         };
-        res.json(results);
         logger.info(`Returning results for ${state}`, {
             httpRequest: {
-                status: res.statusCode,
+                status: 200,
                 requestUrl: req.url,
                 requestMethod: req.method,
                 remoteIp: req.connection.remoteAddress,
@@ -50,25 +48,24 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
             },
             state
         });
-        return;
+        return res.json(results);
     } catch (err) {
-        res.status(500).json({
+        logger.error(`Returning 500 for ${state}`, {
+            httpRequest: {
+                status: 500,
+                requestUrl: req.url,
+                requestMethod: req.method,
+                remoteIp: req.connection.remoteAddress,
+                // etc.
+            },
+            state
+        });
+        return res.status(500).json({
             error: {
                 code: 500,
                 message: 'no predictions found for state'
             }
         });
-        logger.error(`Returning 500 for ${state}`, {
-            httpRequest: {
-                status: res.statusCode,
-                requestUrl: req.url,
-                requestMethod: req.method,
-                remoteIp: req.connection.remoteAddress,
-                // etc.
-            },
-            state
-        });
-        returnl
     }
 });
 
