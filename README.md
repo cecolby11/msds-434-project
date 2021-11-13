@@ -70,6 +70,7 @@ python main.py
   - Resource Manager API
   - Big Query API
   - Big Query Transfer Service (for scheduling big query forecasting)
+  - Stackdriver Monitoring API 
 - Per project: ~Create service account~ A new service account will be terraformed in the infra build for the CICD GAE deployments of the app code, named `cicd-deploy-gae` with the following roles: 
     - storage object admin 
     - service account user 

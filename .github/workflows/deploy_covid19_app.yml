@@ -24,7 +24,7 @@ env:
 jobs:
   deploy_dev:
     if:  github.event.ref == 'refs/heads/dev'
-    name: Deploying to Google Cloud
+    name: Deploying DEV to Google Cloud
     env: 
       BUILD_ENV: dev
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
           echo ENDPOINT: "${{ steps.deploy.outputs.url }}"
   deploy_prod:
     if: github.event.ref == 'refs/heads/main'
-    name: Deploying to Google Cloud
+    name: Deploying PROD to Google Cloud
     env: 
       BUILD_ENV: prod
     runs-on: ubuntu-latest
