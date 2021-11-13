@@ -43,7 +43,6 @@ const loggingWinston = new LoggingWinston();
       new transports.Console(),
     ],
     defaultMeta: {
-      lambda: {},
     },
   });
   module.exports = logger;
