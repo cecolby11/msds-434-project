@@ -2,7 +2,7 @@
 const express = require('express');
 const bq = require('./apis/gcp_big_query');
 const logger = require('./utils/logger');
-
+  
 // Create an Express object and routes (in order)
 const app = express();
 

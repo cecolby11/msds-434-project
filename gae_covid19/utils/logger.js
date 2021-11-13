@@ -5,7 +5,12 @@ const {
   // Imports the Google Cloud client library for Winston
 const {LoggingWinston} = require('@google-cloud/logging-winston');
 
-const loggingWinston = new LoggingWinston();
+const loggingWinston = new LoggingWinston({
+    serviceContext: {
+      service: 'covid19', // required to auto-report logged errors to the Google Cloud Error Reporting console
+      version: '1.0'
+  }
+});
 
   const {
     timestamp, json, combine, colorize, align, simple,
