@@ -17,27 +17,58 @@ app.get('/api/v1/:state/cumulative/forecast', async (req, res) => {
     try {
         const rows = await bq.forecastCumulativeCases(req.params.state);
         if (rows.length === 0) {
-            logger.warn(`no predictions found for ${req.params.state}`, { state, responseCode: 404});
-            return res.status(404).json({
+            res.status(404).json({
                 error: {
                     code: 404,
                     message: 'no predictions found for state'
                 }
             });
+            logger.error(`Returning 404 for ${state}`, {
+                httpRequest: {
+                    status: res.statusCode,
+                    requestUrl: req.url,
+                    requestMethod: req.method,
+                    remoteIp: req.connection.remoteAddress,
+                    // etc.
+                },
+                state
+            });
+            return;
         }
         const results = {
             state: req.params.state,
             results: rows,
         };
-        return res.json(results);
+        res.json(results);
+        logger.info(`Returning results for ${state}`, {
+            httpRequest: {
+                status: res.statusCode,
+                requestUrl: req.url,
+                requestMethod: req.method,
+                remoteIp: req.connection.remoteAddress,
+                // etc.
+            },
+            state
+        });
+        return;
     } catch (err) {
-        logger.error(`error getting predictions for ${req.params.state}`, { state, responseCode: 500});
-        return res.status(500).json({
+        res.status(500).json({
             error: {
                 code: 500,
                 message: 'no predictions found for state'
             }
         });
+        logger.error(`Returning 500 for ${state}`, {
+            httpRequest: {
+                status: res.statusCode,
+                requestUrl: req.url,
+                requestMethod: req.method,
+                remoteIp: req.connection.remoteAddress,
+                // etc.
+            },
+            state
+        });
+        returnl
     }
 });
 

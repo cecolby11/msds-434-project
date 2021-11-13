@@ -22,6 +22,7 @@ module.exports = {
         
             const [rows] = await bq.query(options);
 
+
             return rows;
         } catch (err) {
             logger.error('AN ERROR OCCURRED');
