@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Covid-19 Forecast API
+  description: | 
+    This API returns a 7-day forecast of the cumulative number of covid-19 cases by U.S. state
+servers:
+  - url: https://covid19-dot-<PROJECT-ID>.uc.r.appspot.com/api/v1
+    description: This is the API endpoint for the DEV environment
+  - url:  https://covid19-dot-<PROJECT-ID>.uc.r.appspot.com/api/v1
+    description: This is the API endpoint for the PROD environment
+paths:
+  /{state}/cumulative/forecast:
+    get:
+      summary: Forecast cases by State
+      tags:
+        - cases by state
+      operationId: casesByState
+      description: Query the 7-day case forecast by State
+      parameters:
+        - in: path
+          name: state
+          schema:
+            type: string
+          required: true
+          description: a U.S. state name
+          example: Minnesota
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forecast'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Forecast:
+      type: object
+      properties:
+        state: 
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            description: an array of forecasted values
+            properties:
+              forecast_timestamp:
+                type: object
+                properties: 
+                  value: 
+                    type: string
+              forecast_value: 
+                type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "no predictions found for state"
+            code:
+              type: integer
+              example: 404
