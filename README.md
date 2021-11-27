@@ -21,7 +21,7 @@ The initial model was built using publicly available covid-19 data for US states
 
 ## Architecture/Design
 
-![Architecture Diagram](./MSDS-434-project.drawio.png?raw=true "Architecture Diagram")
+![Architecture Diagram](./docs/MSDS-434-project.drawio.png?raw=true "Architecture Diagram")
 
 ## Directory Structure
 ```
@@ -46,7 +46,11 @@ gae_covid19                 # App Code for API to serve Big Query Predictions (N
 │   deploy_app_dev.yaml     # GHA workflow configuration to deploy Hello World app to GAE
 └───deploy_covid19_app.yaml # GHA workflow configuration to deploy Big Query Covid app to GAE
 iac/                        # Terraform Infrastructure-as-Code configuration files
-docs/                       # Documentation/Notes
+│   <env>/                  # Per-environment Terraform variables, outputs, and state configuration
+└───modules/                # Terraform modules, used by all environments
+src_etl_ingest/             # Node.js application code for the ETL's Cloud Function to Ingest data into GCP from an endpoint
+src_etl_load/               # Node.js application code for the ETL's Cloud Function to Load data from GCP storage to BigQuery
+docs/                       # Documentation
 .gitignore                  # Lists files that should not be tracked
 .terraform-version          # Configures terraform version for tfenv utility to install
 .editorconfig               # Configuration for code editors
