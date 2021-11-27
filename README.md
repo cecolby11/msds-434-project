@@ -19,6 +19,9 @@ This project creates an API that publishes forecasts of the cumulative number of
 
 The initial model was built using publicly available Covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. Further iterations of the solution can incorporate additional API endpoints and UI/visualization.  
 
+## Project Demo
+[View the Demo on YouTube](https://youtu.be/asa_jvounuk)
+
 ## API Documentation
 
 View the Open API Spec for the Covid-19 service:
