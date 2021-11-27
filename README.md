@@ -5,9 +5,11 @@
 
 ## Project Background
 
+My work as a university developer on covid-19 related infrastructure and applications in the last year provided the inspiration for this project topic.
+
 Sophisticated dashboards and predictions with machine learning are widely available on the web. These solutions help organizations respond to Covid19 by examining trends such as cases by county or country, or by providing targeted solutions such as special event planning. 
 
-The university needs to deploy its own targeted solutions and models with internal data sources in order to better support its response to constantly evolving conditions. For example, understanding the impact of seasonal trends throughout the academic year such as the effect on case counts of beginning a new school year or returning from holiday breaks is critical in order to inform policy decisions around testing, masking, and remote learning. Furthermore the university needs the ability to examine these trends across university-specific groups such as undergraduate students, graduate students, faculty, and staff. 
+The university would also benefit from deploy its own targeted solutions and models with internal data sources in order to better support its response to constantly evolving conditions. For example, understanding the impact of seasonal trends throughout the academic year such as the effect on case counts of beginning a new school year or returning from holiday breaks is critical in order to inform policy decisions around testing, masking, and remote learning. Furthermore the university needs the ability to examine these trends across university-specific groups such as undergraduate students, graduate students, faculty, and staff. 
 
 The current Covid19 dashboard reports on descriptive weekly statistics such as case counts, however as the pandemic continues to evolve and the organization accumulates more historical Covid19 data it becomes imperative to incorporate predictive solutions into its response. 
 
@@ -15,7 +17,7 @@ The current Covid19 dashboard reports on descriptive weekly statistics such as c
 
 This project creates an API that publishes forecasts of the cumulative number of covid 19 cases by state. 
 
-The initial model was built using publicly available covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. The solution can be expanded to incorporate additional API endpoints and UI/visualization.  
+The initial model was built using publicly available covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. Further iterations of the solution can incorporate additional API endpoints and UI/visualization.  
 
 ## API Documentation
 
