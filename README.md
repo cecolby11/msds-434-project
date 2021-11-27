@@ -1,5 +1,6 @@
 # MDSD 434 MVP: Covid-19 Forecast API on GCP 
 ![Infra Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/build_infra.yml/badge.svg)
+![Hello World API Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/deploy_hello_app.yml/badge.svg)
 ![BQ Covid19 API Actions Status](https://github.com/cecolby11/msds-434-project/actions/workflows/deploy_covid19_app.yml/badge.svg)
 
 ## Project Background
@@ -16,15 +17,11 @@ This project creates an API that publishes forecasts of the cumulative number of
 
 The initial model was built using publicly available covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. The solution can be expanded to incorporate additional API endpoints and UI/visualization.  
 
-## Running the Project Locally
-
-## Setting up a new environment in GCP 
-
-## Deploying
-
 ## API Documentation
 
 ## Architecture/Design
+
+![Architecture Diagram](./MSDS-434-project.drawio.png?raw=true "Architecture Diagram")
 
 ## Directory Structure
 ```
@@ -55,8 +52,52 @@ docs/                       # Documentation/Notes
 .editorconfig               # Configuration for code editors
 ```
 
-## Running the Flask Hello World API locally 
-### Setup
+
+
+## Deploying
+
+## Running the Project Locally
+Follow the documentation to install the Google Cloud SDK if you haven't already, to set up the gcloud command-line tool: https://cloud.google.com/sdk
+
+### Running the Node.js application code locally 
+Navigate to the 'service accounts' section of the GCP IAM console. Create a new JSON key and download the `App Engine default service account` JSON key to your local machine from GCP. Google App Engine uses a default service account named <PROJECT_ID>@appspot.gserviceaccount.com. 
+
+Set the credentials: set the path to the key by setting the CLI GOOGLE_APPLICATION_CREDENTIALS variable with the path to the json key file on your machine. This enables you to run the code the same way Google App Engine would, from your command line. 
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
+```
+
+Navigate to the node.js directory, install dependencies, then r node.js and pass the name of the entry file: 
+```bash
+cd gae_covid19
+npm install
+node app.js
+``` 
+
+Visit `localhost:8080` in your browser. 
+
+### Terraforming locally 
+Navigate to the 'service accounts' section of the GCP IAM console. Create a new JSON key for the `terraform` service account and download the JSON key to your local machine from GCP.
+
+Set the credentials: set the path to the key by setting the CLI GOOGLE_APPLICATION_CREDENTIALS variable with the path to the json key file on your machine. This enables you to run the terraform the same way the GitHub Actions workflow would, from your command line. 
+```bash
+# set the path to the key using the cli's export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" environment variable
+# e.g. export GOOGLE_APPLICATION_CREDENTIALS="/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json" 
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
+```
+
+Navigate to the directory for the environment you want to deploy (e.g. dev) and run terraform commands 
+```bash
+cd iac/dev
+terraform init # initialize the necessary providers and remote state
+terraform plan # to view planned changes and verify they are as expected, without applying them 
+terraform apply # to execute changes 
+```
+
+### Running the Flask Hello World API locally 
+This project also includes a hello world API to play around with. This is a great starting point if you are new to API development, CICD, or Google App Engine.
+
+Setup: navigate to the directory and install dependencies
 ```bash
 # Python comes installed with the venv module 
 python3 -m venv venv
@@ -65,13 +106,15 @@ pip install -r requirements.txt
 make all
 ```
 
-### Run Flask API 
+Run the Flask API 
 ```bash
 cd gae_web_service
 python main.py
 ```
 
-## GCP setup for deploying a new environment
+Visit localhost:8080 in your browser.
+
+## Setting up a new environment in GCP 
 - Create a new Project in the console for you new environment
   - you can't terraform a project resource without an organization. To create an organization, you have to be a Google Workspace and Cloud Identity customer. Therefore the project should be created via the console and project ID added to the `variables.tf` and `state.tf` in the `{env}` folder. 
 - Per project: Create a new private storage bucket for your account terraform state files. Configure the bucket name and the absolute path to your credentials file in `state.tf` 
@@ -101,21 +144,6 @@ python main.py
     - cloud build service account 
   - create a new key via the console on the service account and download the JSON. save the content as an environment variable/secret in the CICD project (e.g. GitHub secret) to use in the workflow (if you base64 encode it, need to decode it in the workflow before passing it to GOOGLE_CREDENTIALS)
 
-### Terraforming locally 
-If you are running any of the terraform locally, notes about setting credentials. 
-```bash
-# set the path to the key using the cli's export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" environment variable instead of hardcoding it in the provider 
-# this enables you to run the terraform the same way whether from github actions workflow, or your command line
-# the terraform action uses the variable GOOGLE_CREDENTIALS, because it's passed the actual key contents from the secrets store, instead of the path to the json secrets file which is what GOOGLE_APPLICATION_CREDENTIALS uses .
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/json/key/file" 
-# e.g. export GOOGLE_APPLICATION_CREDENTIALS="/users/caseycolby/.ssh/terraform@dev-327916-9fef7acec75a.json" 
-cd iac
-terraform init
-terraform plan
-# verify planned changes are as expected
-terraform apply
-```
-
 ## Secure Application Checklist
 ### Principle of Least Privilege 
 Seperate service accounts were created for the purposes below scoped only to the roles needed for the action
@@ -138,7 +166,7 @@ Use the Big Query Node.js library's [query parameters syntax](https://cloud.goog
 ### Handle Errors Gracefully
 Catch errors and handle, to avoid returning any sensitive information. 
 
-## Future Security Todos
+### Future Security Implementation
 -  [ ] Enforce HTTPS on Google App Engine endpoints
 -  [ ] Scope service account permissions down further to individual permissions in custom roles instead of using predefined GCP roles. 
 -  [ ] API Authentication
