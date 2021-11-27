@@ -5,23 +5,23 @@
 
 ## Project Background
 
-My work as a university developer on covid-19 related infrastructure and applications in the last year provided the inspiration for this project topic.
+My work as a university developer on Covid-19 related infrastructure and applications in the last year provided the inspiration for this project topic.
 
-Sophisticated dashboards and predictions with machine learning are widely available on the web. These solutions help organizations respond to Covid19 by examining trends such as cases by county or country, or by providing targeted solutions such as special event planning. 
+Sophisticated dashboards and predictions with machine learning are widely available on the web. These solutions help organizations respond to Covid-19 by examining trends such as cases by county or country, or by providing targeted solutions such as special event planning. 
 
 The university would also benefit from deploy its own targeted solutions and models with internal data sources in order to better support its response to constantly evolving conditions. For example, understanding the impact of seasonal trends throughout the academic year such as the effect on case counts of beginning a new school year or returning from holiday breaks is critical in order to inform policy decisions around testing, masking, and remote learning. Furthermore the university needs the ability to examine these trends across university-specific groups such as undergraduate students, graduate students, faculty, and staff. 
 
-The current Covid19 dashboard reports on descriptive weekly statistics such as case counts, however as the pandemic continues to evolve and the organization accumulates more historical Covid19 data it becomes imperative to incorporate predictive solutions into its response. 
+The university's Covid-19 dashboard reports on descriptive weekly statistics such as case counts, however as the pandemic continues to evolve and the organization accumulates more historical Covid-19 data it becomes imperative to incorporate predictive solutions into its response. 
 
 ## Project Description
 
-This project creates an API that publishes forecasts of the cumulative number of covid 19 cases by state. 
+This project creates an API that publishes forecasts of the cumulative number of Covid-19 cases by state. 
 
-The initial model was built using publicly available covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. Further iterations of the solution can incorporate additional API endpoints and UI/visualization.  
+The initial model was built using publicly available Covid-19 data for US states, in order to move to development quickly within the limited timeline. This MVP allows for the university to deploy all of the necessary data engineering infrastructure into the organization and easily iterate on the current model to model the internal university case data by group. Further iterations of the solution can incorporate additional API endpoints and UI/visualization.  
 
 ## API Documentation
 
-View the Open API Spec for the Covid 19 service:
+View the Open API Spec for the Covid-19 service:
 
 [View Raw YAML](./docs/open_api/covid19.yaml)
 
@@ -33,7 +33,7 @@ Deploying to Google Cloud is automated with GitHub Actions.
 There are three workflows defined in GitHub Actions: 
 - One to provision the GCP infrastructure from the terraform IaC files. This pipeline runs when changes are made to the iac directory or the ETL source code directories.
 - One to deploy the application code for the hello world API to Google App Engine. This pipeline runs when changes are made to the gae_web_service directory.
-- One to deploy the application code for the Covid 19 API to Google App Engine. This pipeline runs when changes are made to the gae_covid19 directory.
+- One to deploy the application code for the Covid-19 API to Google App Engine. This pipeline runs when changes are made to the gae_covid19 directory.
 
 The project currently has two environments: dev and prod. The dev environment is deployed when changes are pushed to the dev branch in GitHub; the prod environment is deployed when changes are pushed to the main branch in GitHub. You can also manually deploy any of the workflows from the 'Actions' tab in the GitHub repository. 
 
@@ -51,7 +51,7 @@ gae_web_service             # App Code for Hello World JSON API (Python/Flask)
 │   Makefile                # Defines build tasks such as tests, linting, etc. 
 │   app.yaml                # Configuration for web service deployment to App Engine
 └───.gcloudignore           # Lists files in the enclosing directory that should not be deployed to App Engine 
-gae_covid19                 # App Code for API to serve Big Query Predictions (Node.js/Express)
+gae_covid19                 # App Code for API to serve BigQuery Predictions (Node.js/Express)
 │   app.js                  # Node/Express API entry point - App Engine node runtime expects this to be named main
 │   apis/                   # Python application test suite 
 │   .env.example            # Example environment variables file that can be committed to source control 
@@ -62,7 +62,7 @@ gae_covid19                 # App Code for API to serve Big Query Predictions (N
 .github/workflows/          # GitHub Actions configuration files for CICD
 │   build_infra_dev.yaml    # GHA workflow configuration to build application infrastructure (Terraform IaC files)
 │   deploy_app_dev.yaml     # GHA workflow configuration to deploy Hello World app to GAE
-└───deploy_covid19_app.yaml # GHA workflow configuration to deploy Big Query Covid app to GAE
+└───deploy_covid19_app.yaml # GHA workflow configuration to deploy BigQuery Covid-19 app to GAE
 iac/                        # Terraform Infrastructure-as-Code configuration files
 │   <env>/                  # Per-environment Terraform variables, outputs, and state configuration
 └───modules/                # Terraform modules, used by all environments
@@ -144,7 +144,7 @@ Visit localhost:8080 in your browser.
   | Roles Administrator | To create other IAM Roles | 
   | Security Admin | The set IAM Policy role is used in order to set the service account for the cloud function. |
   | Storage Object Viewer | Needed only if you need to run `terraform init -migrate-state`. |
-  | Service Account User | In order to create the big query data transfer config with a service account, the account calling the API needs to be able to impersonate the service account because it must be created with the same service account that will be invoking it. |
+  | Service Account User | In order to create the BigQuery data transfer config with a service account, the account calling the API needs to be able to impersonate the service account because it must be created with the same service account that will be invoking it. |
 - Per project: Enable the necessary APIs in the console [^4]
   - Identity and Access Management (IAM) API
   - Cloud Scheduler API
@@ -153,8 +153,8 @@ Visit localhost:8080 in your browser.
   - Cloud Functions API
   - Cloud Build API (used by GCP to deploy cloud functions)
   - Resource Manager API
-  - Big Query API
-  - Big Query Transfer Service (for scheduling BigQuery forecasting)
+  - BigQuery API
+  - BigQuery Transfer Service (for scheduling BigQuery forecasting)
   - Stackdriver Monitoring API 
 
 ### Setting up CICD Permissions and Workflows
@@ -173,7 +173,7 @@ Visit localhost:8080 in your browser.
 Seperate service accounts were created for the purposes below scoped only to the roles needed for the action
 - provisioning resources for Terraform IaC
 - CICD deploying application code to Google App Engine
-- Running the scheduled job in Big Query to generate predictions
+- Running the scheduled job in BigQuery to generate predictions
 - Invoking the Extract Cloud Function on a cron via Cloud Scheduler 
 - Executing the Extract Cloud Function 
 - Executing the Load Cloud Function
@@ -185,7 +185,7 @@ Separate environments are created for development and production with separate c
 The GCP Service Account Key is stored in the GitHub repository's secrets for use in the GitHub Actions workflows
 
 ### Sanitize Inputs
-Use the Big Query Node.js library's [query parameters syntax](https://cloud.google.com/bigquery/docs/parameterized-queries#bigquery-query-params-nodejs) when the query includes user inputs (such as state name) in order to protect against SQL injection attacks. 
+Use the BigQuery Node.js library's [query parameters syntax](https://cloud.google.com/bigquery/docs/parameterized-queries#bigquery-query-params-nodejs) when the query includes user inputs (such as state name) in order to protect against SQL injection attacks. 
 
 ### Handle Errors Gracefully
 Catch errors and handle, to avoid returning any sensitive information. 
