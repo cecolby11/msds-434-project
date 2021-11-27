@@ -9,7 +9,7 @@ My work as a university developer on Covid-19 related infrastructure and applica
 
 Sophisticated dashboards and predictions with machine learning are widely available on the web. These solutions help organizations respond to Covid-19 by examining trends such as cases by county or country, or by providing targeted solutions such as special event planning. 
 
-The university would also benefit from deploy its own targeted solutions and models with internal data sources in order to better support its response to constantly evolving conditions. For example, understanding the impact of seasonal trends throughout the academic year such as the effect on case counts of beginning a new school year or returning from holiday breaks is critical in order to inform policy decisions around testing, masking, and remote learning. Furthermore the university needs the ability to examine these trends across university-specific groups such as undergraduate students, graduate students, faculty, and staff. 
+The university would also benefit from deploy its own targeted solutions and models with internal data sources in order to better support its response to constantly evolving conditions. For example, understanding the impact of seasonal trends throughout the academic year such as the effect on case counts of beginning a new school year or returning from holiday breaks is critical in order to inform policy decisions around testing, masking, and remote learning. Furthermore, the university needs the ability to examine these trends across university-specific groups such as undergraduate students, graduate students, faculty, and staff. 
 
 The university's Covid-19 dashboard reports on descriptive weekly statistics such as case counts, however as the pandemic continues to evolve and the organization accumulates more historical Covid-19 data it becomes imperative to incorporate predictive solutions into its response. 
 
@@ -31,7 +31,7 @@ Load the yaml content into https://editor.swagger.io/ to view in the swagger int
 Deploying to Google Cloud is automated with GitHub Actions. 
 
 There are three workflows defined in GitHub Actions: 
-- One to provision the GCP infrastructure from the terraform IaC files. This pipeline runs when changes are made to the iac directory or the ETL source code directories.
+- One to provision the GCP infrastructure from the terraform IaC files. This pipeline runs when changes are made to the IaC directory or the ETL source code directories.
 - One to deploy the application code for the hello world API to Google App Engine. This pipeline runs when changes are made to the gae_web_service directory.
 - One to deploy the application code for the Covid-19 API to Google App Engine. This pipeline runs when changes are made to the gae_covid19 directory.
 
@@ -161,16 +161,16 @@ Visit localhost:8080 in your browser.
 - Create a new job in each CICD workflow .yml in the `.github/workflows` directory specific to the new environment 
 - Via the service accounts section of the GCP IAM console, create a new JSON key on the `terraform` service account in your environment and download it. Add the key to the GitHub repository secrets for use in CICD. 
 - Run the Infra CICD pipeline to provision the infrastructure.
-- A new service account will be terraformed by the infra build wit the permissions for deploying code to App Engine. The service account is named `cicd-deploy-gae` with the following roles: 
+- A new service account will be terraformed by the infra build with the permissions for deploying code to App Engine. The service account is named `cicd-deploy-gae` with the following roles: 
     - Storage Object Admin 
     - Service Account User
     - App Engine Admin[^5]
-    - Cloud Build Service Accoun t
-  - Once you have run the infra build create a new JSON key on the `CICD` service account via the service account section of the GCP IAM console. Download the JSON key and add it as as an environment secret in GitHub repository secrets to use in the GitHub Actions workflow. Use secret name: `GCLOUD_KEY_${ENV}`. 
+    - Cloud Build Service Account
+  - Once you have run the infra build create a new JSON key on the `CICD` service account via the service account section of the GCP IAM console. Download the JSON key and add it as an environment secret in GitHub repository secrets to use in the GitHub Actions workflow. Use secret name: `GCLOUD_KEY_${ENV}`. 
 
 ## Secure Application Checklist
 ### Principle of Least Privilege 
-Seperate service accounts were created for the purposes below scoped only to the roles needed for the action
+Separate service accounts were created for the purposes below scoped only to the roles needed for the action
 - provisioning resources for Terraform IaC
 - CICD deploying application code to Google App Engine
 - Running the scheduled job in BigQuery to generate predictions
@@ -198,5 +198,5 @@ Catch errors and handle, to avoid returning any sensitive information.
 [^1]: In the future, this should be scripted; time did not allow in the scope of this project.
 [^2]: You can't terraform a project resource without an organization so this could not be terraformed for this project since to create an organization, you have to be a Google Workspace and Cloud Identity customer. If you are a Google Workspace and Cloud Identity customer and have a GCP organization, you could update the IaC to terraform the project, otherwise the project should be created via the console until this section can be scripted. 
 [^3]: The project owner permission is required because the project provisions a new app engine application, and you must have owner permissions to do this if you are using the predefined roles. In the future, we should define custom roles and scope the permissions down more than the predefined roles; time did not allow for this in the scope of this project. 
-[^4]: Note that if you enable the Cloud Resource Manager API in the console then you could terraform the rest of the API enablement used by the project, however API enablement can take a few minutes to propagate and so some resource creation will fail, but there seems to be a bug such that Terraform thinks it's been created and can't create it on the next apply, becoming stuck in this catch-22. Therefore it is preferable not to terraform these.
-[^5]: Contrary to the documentation, App Engine Deployer errors due to insuffieicnet permissions.
+[^4]: Note that if you enable the Cloud Resource Manager API in the console then you could terraform the rest of the API enablement used by the project, however API enablement can take a few minutes to propagate and so some resource creation will fail, but there seems to be a bug such that Terraform thinks it's been created and can't create it on the next apply, becoming stuck in this catch-22. Therefore, it is preferable not to terraform these.
+[^5]: Contrary to the documentation, App Engine Deployer errors due to insufficient permissions.
