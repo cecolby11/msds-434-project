@@ -19,9 +19,11 @@ The initial model was built using publicly available covid-19 data for US states
 
 ## API Documentation
 
-View the Open API Spec for the Covid 19 service: 
+View the Open API Spec for the Covid 19 service:
+
 [View Raw YAML](./docs/open_api/covid19.yaml)
-[View in Online Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/cecolby11/msds-434-project/main/docs/open_api/covid19.yaml)
+
+Load the yaml content into https://editor.swagger.io/ to view in the swagger interface.
 
 ## Deploying
 Deploying to Google Cloud is automated with GitHub Actions. 
