@@ -19,6 +19,16 @@ The initial model was built using publicly available covid-19 data for US states
 
 ## API Documentation
 
+## Deploying
+Deploying to Google Cloud is automated with GitHub Actions. 
+
+There are three workflows defined in GitHub Actions: 
+- One to provision the GCP infrastructure from the terraform IaC files. This pipeline runs when changes are made to the iac directory or the ETL source code directories.
+- One to deploy the application code for the hello world API to Google App Engine. This pipeline runs when changes are made to the gae_web_service directory.
+- One to deploy the application code for the Covid 19 API to Google App Engine. This pipeline runs when changes are made to the gae_covid19 directory.
+
+The project currently has two environments: dev and prod. The dev environment is deployed when changes are pushed to the dev branch in GitHub; the prod environment is deployed when changes are pushed to the main branch in GitHub. You can also manually deploy any of the workflows from the 'Actions' tab in the GitHub repository. 
+
 ## Architecture/Design
 
 ![Architecture Diagram](./docs/MSDS-434-project.drawio.png?raw=true "Architecture Diagram")
@@ -55,10 +65,6 @@ docs/                       # Documentation
 .terraform-version          # Configures terraform version for tfenv utility to install
 .editorconfig               # Configuration for code editors
 ```
-
-
-
-## Deploying
 
 ## Running the Project Locally
 Follow the documentation to install the Google Cloud SDK if you haven't already, to set up the gcloud command-line tool: https://cloud.google.com/sdk
@@ -118,35 +124,41 @@ python main.py
 
 Visit localhost:8080 in your browser.
 
-## Setting up a new environment in GCP 
-- Create a new Project in the console for you new environment
-  - you can't terraform a project resource without an organization. To create an organization, you have to be a Google Workspace and Cloud Identity customer. Therefore the project should be created via the console and project ID added to the `variables.tf` and `state.tf` in the `{env}` folder. 
-- Per project: Create a new private storage bucket for your account terraform state files. Configure the bucket name and the absolute path to your credentials file in `state.tf` 
-- Per project: Create a new service account for Terraform in console before running commands. Give it the following roles:
-    - project owner (because the project provisions a new app engine application, and you must have owner permissions if you are using the predefined roles - if we were to go from MVP to operationalizing this, would probably want to define custom roles and scope the permissions down as much as possible).
-    - Roles Administrator to create other IAM Roles
-    - security admin (the set IAM Policy role is used in order to set the service account for the cloud function). 
-    - storage object viewer (only if you need to run `terraform init -migrate-state`)
-    - service account user (in order to create the big query data transfer config with a service account, the account calling the API needs to be able to impersonate the service account because it must be created with the same service account that will be invoking it)
-  - create a new JSON key on the service account and download it. Add the key to the GitHub repository secrets for use in  CICD. 
-- Per project: Enable the necessary APIs in the console:
-  - Note that if you enable the Cloud Resource Manager API in the console then you could terraform the rest of the API enablement used by the project, however API enablement can take a few minutes to propagate and so some resource creation will fail, but there seems to be a bug such that Terraform thinks it's been created and can't create it on the next apply. Therefore I'm doing it via the console. 
-  - Identity and Access Management API (IAM). 
+## Setting up a new environment in GCP[^1]
+- Within the `iac` directory, duplicate an existing terraform environment directory and rename it for your environment. 
+- Create a new project in the GCP console for the new environment. Add the project ID to the `iac/{env}/variables.tf` in the `iac/{env}` directory. [^2]
+- Per project: Via the GCP storage console, create a new private storage bucket for your account terraform state files. Update the bucket name in `iac/{env}/state.tf`. 
+- Per project: Create a new `terraform` service account for Terraform via the GCP IAM console before running commands. Give it the following roles:
+
+  | Role | Purpose | 
+  | --- | --- | 
+  | Project Owner [^3] | To provision a new App Engine application. |
+  | Roles Administrator | To create other IAM Roles | 
+  | Security Admin | The set IAM Policy role is used in order to set the service account for the cloud function. |
+  | Storage Object Viewer | Needed only if you need to run `terraform init -migrate-state`. |
+  | Service Account User | In order to create the big query data transfer config with a service account, the account calling the API needs to be able to impersonate the service account because it must be created with the same service account that will be invoking it. |
+- Per project: Enable the necessary APIs in the console [^4]
+  - Identity and Access Management (IAM) API
   - Cloud Scheduler API
   - Cloud Storage API
   - App Engine Admin API
   - Cloud Functions API
-  - Cloud Build API (gcp uses in cloud function deployment)
+  - Cloud Build API (used by GCP to deploy cloud functions)
   - Resource Manager API
   - Big Query API
-  - Big Query Transfer Service (for scheduling big query forecasting)
+  - Big Query Transfer Service (for scheduling BigQuery forecasting)
   - Stackdriver Monitoring API 
-- Per project: ~Create service account~ A new service account will be terraformed in the infra build for the CICD GAE deployments of the app code, named `cicd-deploy-gae` with the following roles: 
-    - storage object admin 
-    - service account user 
-    - app engine admin (deployer not enough and errors due to permissions, contrary to the documentation) 
-    - cloud build service account 
-  - create a new key via the console on the service account and download the JSON. save the content as an environment variable/secret in the CICD project (e.g. GitHub secret) to use in the workflow (if you base64 encode it, need to decode it in the workflow before passing it to GOOGLE_CREDENTIALS)
+
+### Setting up CICD Permissions and Workflows
+- Create a new job in each CICD workflow .yml in the `.github/workflows` directory specific to the new environment 
+- Via the service accounts section of the GCP IAM console, create a new JSON key on the `terraform` service account in your environment and download it. Add the key to the GitHub repository secrets for use in CICD. 
+- Run the Infra CICD pipeline to provision the infrastructure.
+- A new service account will be terraformed by the infra build wit the permissions for deploying code to App Engine. The service account is named `cicd-deploy-gae` with the following roles: 
+    - Storage Object Admin 
+    - Service Account User
+    - App Engine Admin[^5]
+    - Cloud Build Service Accoun t
+  - Once you have run the infra build create a new JSON key on the `CICD` service account via the service account section of the GCP IAM console. Download the JSON key and add it as as an environment secret in GitHub repository secrets to use in the GitHub Actions workflow. Use secret name: `GCLOUD_KEY_${ENV}`. 
 
 ## Secure Application Checklist
 ### Principle of Least Privilege 
@@ -174,3 +186,9 @@ Catch errors and handle, to avoid returning any sensitive information.
 -  [ ] Enforce HTTPS on Google App Engine endpoints
 -  [ ] Scope service account permissions down further to individual permissions in custom roles instead of using predefined GCP roles. 
 -  [ ] API Authentication
+
+[^1]: In the future, this should be scripted; time did not allow in the scope of this project.
+[^2]: You can't terraform a project resource without an organization so this could not be terraformed for this project since to create an organization, you have to be a Google Workspace and Cloud Identity customer. If you are a Google Workspace and Cloud Identity customer and have a GCP organization, you could update the IaC to terraform the project, otherwise the project should be created via the console until this section can be scripted. 
+[^3]: The project owner permission is required because the project provisions a new app engine application, and you must have owner permissions to do this if you are using the predefined roles. In the future, we should define custom roles and scope the permissions down more than the predefined roles; time did not allow for this in the scope of this project. 
+[^4]: Note that if you enable the Cloud Resource Manager API in the console then you could terraform the rest of the API enablement used by the project, however API enablement can take a few minutes to propagate and so some resource creation will fail, but there seems to be a bug such that Terraform thinks it's been created and can't create it on the next apply, becoming stuck in this catch-22. Therefore it is preferable not to terraform these.
+[^5]: Contrary to the documentation, App Engine Deployer errors due to insuffieicnet permissions.
